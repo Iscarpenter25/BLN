@@ -792,7 +792,7 @@
 <div class="container">
     <div class="overview">
         <h2>What We Need &amp; Why</h2>
-        <p class="overview-desc">Today, three data flows between Bell and Silver Fern rely on manual file exchanges (Excel workbooks and CSVs). Moving this data into structured Business Central tables enables automated, incremental synchronization &mdash; eliminating manual handoffs and ensuring both systems stay current.</p>
+        <p class="overview-desc">Today, data flows between Bell and Silver Fern rely on manual file exchanges &mdash; Excel workbooks and CSVs. Moving this data into structured Business Central tables enables automated, incremental synchronization &mdash; eliminating manual handoffs and ensuring both systems stay current and accurate with a single system of record.</p>
 
         <div class="summary-grid">
             <div class="summary-card forecast summary-full">
@@ -809,8 +809,8 @@
                     <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="3" fill="#0078D4"/><text x="8" y="12" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#fff">BC</text></svg>
                     <span>Key Takeaway</span>
                 </div>
-                <h3>Two New BC Tables Replace Three Manual Inputs</h3>
-                <p>The Variant Mix Allocation table does double duty &mdash; it captures both the standard weekly percentages <strong>and</strong> regional mix differences (when one facility has different percentages than others) in a single table. No additional table is needed for regional exceptions.</p>
+                <h3>Two New BC Tables</h3>
+                <p>We are proposing two new tables in Business Central: <a href="#table-store-facility" style="color: var(--bc-blue); text-decoration: underline;">Store-to-Facility Mapping</a> and <a href="#table-variant-mix" style="color: var(--bc-blue); text-decoration: underline;">Variant Mix Allocation</a>. The Variant Mix table does double duty &mdash; it captures both the standard weekly percentages <strong>and</strong> regional mix differences (when one facility has different percentages than others) in a single table. No additional table is needed for regional exceptions.</p>
             </div>
         </div>
     </div>
@@ -824,7 +824,7 @@
 <div class="container">
     <div class="section-header">
         <div class="section-label" style="color: var(--bc-blue);">BC Table 1</div>
-        <h2>Store-to-Facility Mapping</h2>
+        <h2 id="table-store-facility">Store-to-Facility Mapping</h2>
         <p>Maps each HD store location to its default distribution facility for a given product subclass. This tells our planning systems where demand for each store should be routed.</p>
     </div>
 
@@ -923,7 +923,7 @@
 <div class="container">
     <div class="section-header">
         <div class="section-label" style="color: var(--bc-blue);">BC Table 2</div>
-        <h2>Variant Mix Allocation</h2>
+        <h2 id="table-variant-mix">Variant Mix Allocation</h2>
         <p>Weekly mix percentages for each production variant, broken out by facility. This drives recipe construction and production scheduling in our planning systems.</p>
     </div>
 
@@ -1216,11 +1216,9 @@
             <h3>Suggested Timeline</h3>
         </div>
         <div class="card-body">
-            <p><strong>1.</strong> &nbsp;Schedule one more follow-up meeting to review the BC table structures and align on the final column definitions before Bell begins building.</p>
-            <p><strong>2.</strong> &nbsp;Bell builds both tables in BC (can be developed in parallel).</p>
-            <p><strong>3.</strong> &nbsp;Silver Fern builds the automated sync pipeline for each table.</p>
-            <p><strong>4.</strong> &nbsp;Silver Fern conducts internal testing to verify that the data flows through correctly and produces the expected output on our side.</p>
-            <p><strong>5.</strong> &nbsp;Joint validation to confirm data accuracy against current manual outputs and sign off.</p>
+            <p><strong>1.</strong> &nbsp;<em>(If needed)</em> Schedule a follow-up meeting to review the BC table structures and align on final column definitions. If Bell feels comfortable with the specs as written, this step can be skipped.</p>
+            <p><strong>2.</strong> &nbsp;Bell builds both tables in BC. Silver Fern builds the automated sync pipeline. Both sides can work in parallel.</p>
+            <p><strong>3.</strong> &nbsp;Joint validation and testing to confirm data accuracy against current manual outputs before go-live.</p>
         </div>
     </div>
 </div>
