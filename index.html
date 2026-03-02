@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Central Data Integrations — Bell Nursery &times; Silver Fern</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=PT+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        /* ================================================================
+           SILVER FERN BRAND VARIABLES
+           ================================================================ */
+        :root {
+            /* SF Primary */
+            --sf-rich-soil: #3F4948;
+            --sf-fern: #69936C;
+
+            /* SF Complementary */
+            --sf-stirling-silver: #B3B3B3;
+            --sf-light-silver: #F2F2F2;
+            --sf-spring-green: #A1DBA6;
+
+            /* Product Colors */
+            --forecast-purple: #8F64A3;
+            --forecast-light: #F3EDF6;
+            --forecast-dark: #6B4A7A;
+            --produce-orange: #DB6E14;
+            --produce-light: #FDF3EB;
+            --produce-dark: #A85310;
+
+            /* Business Central */
+            --bc-blue: #0078D4;
+            --bc-light: #E8F4FD;
+
+            /* Neutrals */
+            --white: #FFFFFF;
+            --border: #E2E8E6;
+            --bg: #FAFBFB;
+            --text: #3F4948;
+            --text-light: #4A5554;
+            --text-muted: #8A9594;
+
+            /* Typography */
+            --font-heading: 'Montserrat', Arial, sans-serif;
+            --font-subheading: 'PT Serif', Georgia, serif;
+            --font-body: 'Montserrat', Arial, sans-serif;
+            --heading-tracking: 0.125em;
+        }
+
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ================================================================
+           TYPOGRAPHY — SF Brand Guidelines
+           ================================================================ */
+        h1 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: var(--heading-tracking);
+            color: var(--sf-rich-soil);
+        }
+
+        h2 {
+            font-family: var(--font-subheading);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--sf-fern);
+        }
+
+        h3 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--sf-rich-soil);
+        }
+
+        p, li {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--sf-fern);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.88em;
+            background: var(--sf-light-silver);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* ================================================================
+           LAYOUT
+           ================================================================ */
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .section-spacer {
+            height: 80px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 56px 0;
+        }
+
+        /* ================================================================
+           HEADER / HERO
+           ================================================================ */
+        .header {
+            background: var(--sf-rich-soil);
+            padding: 28px 0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo svg {
+            height: 28px;
+            width: auto;
+        }
+
+        .header-meta {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .hero {
+            background: linear-gradient(170deg, var(--sf-rich-soil) 0%, #4A5D5B 100%);
+            padding: 72px 0 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -100px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(105,147,108,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-label {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--sf-spring-green);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            color: var(--white);
+            text-transform: none;
+            letter-spacing: 0;
+            line-height: 1.25;
+            margin-bottom: 16px;
+            max-width: 600px;
+        }
+
+        .hero-sub {
+            font-family: var(--font-subheading);
+            font-style: italic;
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            max-width: 520px;
+            line-height: 1.6;
+        }
+
+        .hero-products {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .hero-product-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .hero-product-badge svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hero-product-badge span {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* ================================================================
+           OVERVIEW / TL;DR
+           ================================================================ */
+        .overview {
+            padding: 56px 0;
+        }
+
+        .overview h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .overview-desc {
+            font-size: 15px;
+            color: var(--text-light);
+            max-width: 640px;
+            margin-bottom: 40px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            position: relative;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .summary-card.forecast::before {
+            background: var(--forecast-purple);
+        }
+
+        .summary-card.produce::before {
+            background: var(--produce-orange);
+        }
+
+        .summary-card.bc::before {
+            background: var(--bc-blue);
+        }
+
+        .summary-card-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .summary-card-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .summary-card-icon span {
+            font-family: var(--font-heading);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .summary-card-icon.forecast span { color: var(--forecast-purple); }
+        .summary-card-icon.produce span { color: var(--produce-orange); }
+        .summary-card-icon.bc span { color: var(--bc-blue); }
+
+        .summary-card h3 {
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card p {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .summary-full {
+            grid-column: 1 / -1;
+        }
+
+        /* ================================================================
+           SECTION CARDS
+           ================================================================ */
+        .section-header {
+            margin-bottom: 36px;
+        }
+
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .section-label.forecast { color: var(--forecast-purple); }
+        .section-label.produce { color: var(--produce-orange); }
+
+        .section-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .section-header p {
+            font-size: 15px;
+            color: var(--text-light);
+            max-width: 640px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h3 {
+            font-size: 14px;
+        }
+
+        .card-header .badge {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .badge-forecast {
+            background: var(--forecast-light);
+            color: var(--forecast-purple);
+        }
+
+        .badge-produce {
+            background: var(--produce-light);
+            color: var(--produce-orange);
+        }
+
+        .badge-bc {
+            background: var(--bc-light);
+            color: var(--bc-blue);
+        }
+
+        .badge-sf {
+            background: #EDF3ED;
+            color: var(--sf-fern);
+        }
+
+        .card-body {
+            padding: 24px 28px;
+        }
+
+        .card-body p {
+            margin-bottom: 16px;
+        }
+
+        .card-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ================================================================
+           DATA TABLES
+           ================================================================ */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.data-table th {
+            text-align: left;
+            padding: 10px 14px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: var(--bg);
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        table.data-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        table.data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.data-table tr:hover td {
+            background: rgba(105,147,108,0.03);
+        }
+
+        td.mono {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-size: 12px;
+        }
+
+        td.center {
+            text-align: center;
+        }
+
+        .highlight-cell {
+            background: rgba(219,110,20,0.06);
+            font-weight: 500;
+            color: var(--produce-orange);
+        }
+
+        /* Schema tables */
+        table.schema-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.schema-table th {
+            text-align: left;
+            padding: 10px 14px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            white-space: nowrap;
+        }
+
+        table.schema-table th.bc-header {
+            background: var(--bc-blue);
+        }
+
+        table.schema-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        table.schema-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        table.schema-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        table.schema-table td:first-child {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--sf-rich-soil);
+        }
+
+        table.schema-table td:nth-child(2) {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            font-size: 12px;
+            color: var(--bc-blue);
+        }
+
+        table.schema-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pk-tag, .fk-tag {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 8px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+        }
+
+        .pk-tag {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .fk-tag {
+            background: var(--bc-light);
+            color: var(--bc-blue);
+        }
+
+        /* ================================================================
+           FLOW DIAGRAMS
+           ================================================================ */
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 20px;
+            margin: 24px 0;
+        }
+
+        .flow-box {
+            border-radius: 10px;
+            padding: 18px 20px;
+            text-align: center;
+            min-width: 160px;
+        }
+
+        .flow-box h4 {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .flow-box p {
+            font-size: 11px;
+            line-height: 1.4;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .flow-arrow {
+            width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .flow-arrow svg {
+            width: 20px;
+            height: 20px;
+            color: var(--sf-stirling-silver);
+        }
+
+        /* ================================================================
+           CALLOUTS
+           ================================================================ */
+        .callout {
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 24px 0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .callout-fern {
+            background: #EDF3ED;
+            border-left: 3px solid var(--sf-fern);
+            color: #2B3B2D;
+        }
+
+        .callout-produce {
+            background: var(--produce-light);
+            border-left: 3px solid var(--produce-orange);
+            color: #6B3A0A;
+        }
+
+        .callout-forecast {
+            background: var(--forecast-light);
+            border-left: 3px solid var(--forecast-purple);
+            color: #4A2D5C;
+        }
+
+        .callout-bc {
+            background: var(--bc-light);
+            border-left: 3px solid var(--bc-blue);
+            color: #003A6B;
+        }
+
+        /* ================================================================
+           NEXT STEPS TABLE
+           ================================================================ */
+        .next-steps-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .next-steps-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--sf-rich-soil);
+            white-space: nowrap;
+        }
+
+        .next-steps-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .next-steps-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .next-steps-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .next-steps-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ================================================================
+           FOOTER
+           ================================================================ */
+        .footer {
+            background: var(--sf-rich-soil);
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-brand svg {
+            height: 22px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0.3px;
+        }
+
+        .footer-right {
+            font-size: 11px;
+            color: rgba(255,255,255,0.25);
+            font-style: italic;
+        }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            .container { padding: 0 24px; }
+            .hero { padding: 48px 0 40px; }
+            .hero h1 { font-size: 1.5rem; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .flow { flex-direction: column; padding: 20px 16px; }
+            .flow-arrow svg { transform: rotate(90deg); }
+            .hero-products { flex-direction: column; gap: 12px; }
+            .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+        }
+
+        @media print {
+            body { background: white; }
+            .header, .footer { display: none; }
+            .card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     HEADER BAR
+     ================================================================ -->
+<div class="header">
+    <div class="container">
+        <div class="header-inner">
+            <div class="header-logo">
+                <!-- SF Logo — Horizontal, For On Dark -->
+                <svg viewBox="0 0 284.01 55.14" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><style>.lhd1{fill:#69936c;}.lhd2{fill:#fff;}</style></defs><g><path class="lhd1" d="M51.9,21.72A25,25,0,0,1,6.61,41.21a92.42,92.42,0,0,0,13.08-9.36A127.61,127.61,0,0,1,37.31,19.11c.8-.49,1.6-.95,2.39-1.39,1.13-.64,4.26-2.21,4.47-2.33.41-.25.76-.53,1.11-.78a1.49,1.49,0,0,0,.14-.12,6.43,6.43,0,0,0,1.88-2.28A6.23,6.23,0,0,0,48,9.38a3.76,3.76,0,0,0-2,1.22A7,7,0,0,0,44.63,13c-.08.24-.13.43-.16.51a2.66,2.66,0,0,1-1.39,1.48c-1.07.49-2.08,1-3.07,1.43a21.76,21.76,0,0,0,1.7-6.08,5.72,5.72,0,0,0-.12-1.69c-3.38,1.38-2.68,5.26-3,6.61a5.08,5.08,0,0,1-2.44,3.19c-.46.26-.9.5-1.34.76,0,0,.64-1.93.77-2.64a25.57,25.57,0,0,0,.35-7l-.27.15a4.58,4.58,0,0,0-2.25,2.61c-.24.84-.25,5.33-.43,6.14a5.19,5.19,0,0,1-2.31,3.19l-2.28,1.47.3-.65a13,13,0,0,0,.81-2.3,48.82,48.82,0,0,0,.46-9.75l-.11.07a8,8,0,0,0-3,3.61c-.67,1.6-.3,6.39-.7,8.7A5,5,0,0,1,24.09,26c-.89.64-1.77,1.24-2.64,1.86,0,0,.85-2.8,1-3.88a45,45,0,0,0,.35-12.22A7.79,7.79,0,0,0,19.26,16c-.54,2,0,10-.55,12.3a5,5,0,0,1-1.93,2.78c-1.2.86-2.5,1.77-2.5,1.77a21.32,21.32,0,0,0,1.15-3.66c.54-3.36,0-11.53-.3-13.76-.91.66-3.36,2-4,5-.46,2.13.89,9.52.72,11.22A5.61,5.61,0,0,1,8.5,36.06L4.66,37.62A25,25,0,0,1,44.08,8.79,15.22,15.22,0,0,1,46,7.08a27.53,27.53,0,1,0,8.48,14.46A13.53,13.53,0,0,1,51.9,21.72Z"/><path class="lhd1" d="M51.09,11.94a2.53,2.53,0,0,0-.61.28l-.08.06a6.57,6.57,0,0,0-1.73,1.82l-.11.16.23,0a13.78,13.78,0,0,0,3,.26,4.25,4.25,0,0,0,.84-.12A4.83,4.83,0,0,0,53.68,14,7.78,7.78,0,0,0,54.9,13c.26-.24.51-.49.77-.78-.33-.09-.75-.18-1.21-.26A8,8,0,0,0,51.09,11.94Z"/><path class="lhd1" d="M17.29,37.79a6.89,6.89,0,0,0-2.93,1c-.22.13-.44.28-.66.44l-.81.59A46.51,46.51,0,0,1,19,41.72c.81.29,2.58,1.2,4.14,2,1.29.66,2.63,1.35,2.9,1.41a6.11,6.11,0,0,0,4.54-.77,6.17,6.17,0,0,0,.81-.57c-1.57-1.13-7.74-5.16-10.64-5.79A11.54,11.54,0,0,0,17.29,37.79Z"/><path class="lhd1" d="M24.89,32.39a6.63,6.63,0,0,0-2.74,1,7.29,7.29,0,0,0-.88.61l-.84.66A44.18,44.18,0,0,1,27,36.07c.55.15,2,.74,3.41,1.31,1.12.46,2.29.93,2.53,1a5.48,5.48,0,0,0,4-.68c.24-.15.44-.3.61-.43-1.52-1-7.32-4.23-9.85-4.74A9.3,9.3,0,0,0,24.89,32.39Z"/><path class="lhd1" d="M30.89,27a6,6,0,0,0-2.64.9,5.82,5.82,0,0,0-.66.44l-.71.55a36.93,36.93,0,0,1,5.89,1.38c.47.13,1.58.54,2.6.91s1.82.67,2.06.73a5.17,5.17,0,0,0,3.94-.61l.28-.18c-1.35-.91-5.89-3.41-8.22-3.93A8.37,8.37,0,0,0,30.89,27Z"/><path class="lhd1" d="M37.12,22.84a5.12,5.12,0,0,0-2.47.76l-.76.52a33.8,33.8,0,0,1,4.78,1.28c.41.13,1.19.49,1.9.82s1.13.52,1.33.57a4.48,4.48,0,0,0,3.43-.41,25.06,25.06,0,0,0-6.1-3.3A7.17,7.17,0,0,0,37.12,22.84Z"/><path class="lhd1" d="M42.83,19.77a5.94,5.94,0,0,0-1.79.06,7.23,7.23,0,0,0-1.77.8c.67.15,1.56.43,2.48.74,1.27.43,2.41.93,3.42,1.31l1.26.45a5,5,0,0,0,3.26-.24h0l-.06-.07A7.66,7.66,0,0,0,46.79,21,32.08,32.08,0,0,0,42.83,19.77Z"/><path class="lhd1" d="M47.4,18.49a8.42,8.42,0,0,0,5.85.36A9.19,9.19,0,0,0,49.11,17a7.55,7.55,0,0,0-4.35.71A14.79,14.79,0,0,1,47.4,18.49Z"/><path class="lhd2" d="M80.63,21.18a5.49,5.49,0,0,0-3-1.13c-2.16-.06-3.69.94-3.77,2.6-.08,1.25.64,2.11,1.94,2.74l4.27,2.14c2.08,1,3.27,2.46,3.27,4.54,0,3-2.44,5.49-6.24,5.46a7.88,7.88,0,0,1-5.82-2.44L73,33.4a6,6,0,0,0,4.24,1.69c2.25,0,3.61-1.27,3.61-2.91,0-.91-.45-1.77-2-2.52l-4.16-2c-2.44-1.17-3.49-3.05-3.35-5.13.19-3.27,3.08-5.12,6.46-4.88a7.66,7.66,0,0,1,4.68,1.92Z"/><rect class="lhd2" x="93.46" y="17.86" width="2.52" height="19.4"/><polygon class="lhd2" points="118.44 34.81 118.44 37.25 107.08 37.25 107.08 17.86 109.6 17.86 109.6 34.81 118.44 34.81"/><polygon class="lhd2" points="141.28 17.86 132.39 37.25 123.47 17.86 126.29 17.86 132.39 31.3 138.46 17.86 141.28 17.86"/><polygon class="lhd2" points="162.21 34.81 162.21 37.25 150.82 37.25 150.82 17.86 161.88 17.86 161.88 20.3 153.34 20.3 153.34 26.47 160.3 26.47 160.3 28.66 153.34 28.66 153.34 34.81 162.21 34.81"/><path class="lhd2" d="M186.15,37.25h-2.71l-1.58-4.54c-.61-1.72-1.08-2.63-2.75-2.63h-4.23v7.17h-2.53V17.86h7.15A6.17,6.17,0,0,1,185.79,24a6,6,0,0,1-3.24,5.32,6,6,0,0,1,1.66,2.6Zm-6.79-9.36A3.84,3.84,0,0,0,183.27,24a3.72,3.72,0,0,0-3.91-3.75h-4.48v7.6Z"/><polygon class="lhd2" points="205.64 20.3 205.64 26.47 212.81 26.47 212.81 28.66 205.64 28.66 205.64 37.25 203.12 37.25 203.12 17.86 214.4 17.86 214.4 20.3 205.64 20.3"/><polygon class="lhd2" points="235.93 34.81 235.93 37.25 224.54 37.25 224.54 17.86 235.6 17.86 235.6 20.3 227.06 20.3 227.06 26.47 234.02 26.47 234.02 28.66 227.06 28.66 227.06 34.81 235.93 34.81"/><path class="lhd2" d="M259.87,37.25h-2.71l-1.58-4.54c-.61-1.72-1.08-2.63-2.75-2.63H248.6v7.17h-2.53V17.86h7.15A6.17,6.17,0,0,1,259.51,24a6,6,0,0,1-3.24,5.32,6,6,0,0,1,1.66,2.6Zm-6.79-9.36A3.84,3.84,0,0,0,257,24a3.72,3.72,0,0,0-3.91-3.75H248.6v7.6Z"/><polygon class="lhd2" points="284.01 17.86 284.01 37.25 272.54 24.51 272.54 37.25 270.02 37.25 270.02 17.86 281.52 30.66 281.52 17.86 284.01 17.86"/></g></svg>
+            </div>
+            <div class="header-meta">Bell Nursery &times; Silver Fern</div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     HERO
+     ================================================================ -->
+<div class="hero">
+    <div class="container">
+        <div class="hero-label">Data Integration Overview</div>
+        <h1>Business Central Table Specifications</h1>
+        <p class="hero-sub">Two new BC tables to automate the data exchange between Bell Nursery and Silver Fern's planning systems.</p>
+        <div class="hero-products">
+            <div class="hero-product-badge">
+                <!-- Forecast icon -->
+                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M6.12,0A6.12,6.12,0,0,0,0,6.12V16H9.88A6.12,6.12,0,0,0,16,9.88V0Z" fill="#8F64A3"/><polygon points="8.06 12.97 6.37 12.97 6.37 9.63 3.03 9.63 3.03 7.94 8.06 7.94 8.06 12.97" fill="#fff"/><polygon points="11.28 9.74 9.6 9.74 9.6 6.4 6.26 6.4 6.26 4.72 11.28 4.72 11.28 9.74" fill="#fff"/></svg>
+                <span>Forecast</span>
+            </div>
+            <div class="hero-product-badge">
+                <!-- Produce icon -->
+                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M6.12,0A6.12,6.12,0,0,0,0,6.12V16H9.88A6.12,6.12,0,0,0,16,9.88V0Z" fill="#DB6E14"/><path d="M11.79,5.11l0-.82H11c-.68,0-4.13,0-5.37,1.23A3.52,3.52,0,0,0,5.07,9.8L3,11.9l1.19,1.19L6.26,11a3.59,3.59,0,0,0,1.82.5,3.53,3.53,0,0,0,2.48-1C11.79,9.24,11.8,5.79,11.79,5.11ZM9.37,9.28A1.83,1.83,0,1,1,6.78,6.7,6.82,6.82,0,0,1,10.09,6C10,7.3,9.79,8.86,9.37,9.28Z" fill="#fff"/></svg>
+                <span>Produce</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     OVERVIEW
+     ================================================================ -->
+<div class="container">
+    <div class="overview">
+        <h2>What We Need &amp; Why</h2>
+        <p class="overview-desc">Today, three data flows between Bell and Silver Fern rely on manual file exchanges (Excel workbooks and CSVs). Moving this data into structured Business Central tables enables automated, incremental synchronization &mdash; eliminating manual handoffs and ensuring both systems stay current.</p>
+
+        <div class="summary-grid">
+            <div class="summary-card forecast summary-full">
+                <div class="summary-card-icon forecast">
+                    <svg viewBox="0 0 83.37 82.58" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path d="M77.72,32.52A37.46,37.46,0,0,1,9.89,61.71a137.57,137.57,0,0,0,19.6-14A192.45,192.45,0,0,1,55.88,28.61c1.19-.73,2.39-1.41,3.58-2.08,1.69-1,6.37-3.3,6.69-3.49.61-.37,1.14-.78,1.66-1.15.08-.06.13-.13.21-.19a9.61,9.61,0,0,0,2.82-3.42,9.21,9.21,0,0,0,1-4.23,5.67,5.67,0,0,0-3,1.82,10.22,10.22,0,0,0-2,3.52c-.12.37-.2.64-.25.77a4,4,0,0,1-2.08,2.22c-1.6.73-3.11,1.42-4.6,2.14a32.64,32.64,0,0,0,2.55-9.11,8.62,8.62,0,0,0-.17-2.53c-5.07,2.06-4,7.88-4.54,9.91a7.65,7.65,0,0,1-3.66,4.77l-2,1.13s.95-2.88,1.15-4a38.11,38.11,0,0,0,.52-10.46,4.09,4.09,0,0,0-.39.22A6.88,6.88,0,0,0,50,18.4c-.36,1.27-.38,8-.64,9.2a7.78,7.78,0,0,1-3.47,4.78l-3.41,2.2.45-1a17.81,17.81,0,0,0,1.21-3.45c.89-3.84.85-12,.7-14.6l-.18.11a11.8,11.8,0,0,0-4.42,5.41c-1,2.38-.46,9.56-1,13a7.49,7.49,0,0,1-3.1,4.78l-3.95,2.78s1.27-4.19,1.55-5.8a67.43,67.43,0,0,0,.53-18.31c-1.47,1-4.41,2.9-5.36,6.46-.82,3,0,15-.84,18.42a7.32,7.32,0,0,1-2.89,4.15c-1.79,1.3-3.74,2.67-3.74,2.67a31.68,31.68,0,0,0,1.73-5.49c.81-5-.06-17.27-.45-20.6-1.36,1-5,3.05-6,7.54C15.94,33.89,18,45,17.71,47.5a8.38,8.38,0,0,1-5,6.5c-2,.82-4.27,1.74-5.75,2.34A37.45,37.45,0,0,1,66,13.17a22.07,22.07,0,0,1,2.86-2.57,41.24,41.24,0,1,0,12.7,21.67A20.32,20.32,0,0,1,77.72,32.52Z" fill="#69936C"/></svg>
+                    <span style="color: var(--sf-fern);">Silver Fern Planning Systems</span>
+                </div>
+                <h3>Two Data Flows We Need From Business Central</h3>
+                <p><strong>Store &rarr; Facility Mapping</strong> &mdash; Which distribution facility serves each HD store location, by product program. Used for demand allocation and distribution routing.</p>
+                <p style="margin-top: 8px;"><strong>Variant Mix Allocation</strong> &mdash; Weekly mix percentages for each production variant, by facility. Used for recipe construction and production scheduling.</p>
+            </div>
+            <div class="summary-card bc summary-full">
+                <div class="summary-card-icon bc">
+                    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><rect width="16" height="16" rx="3" fill="#0078D4"/><text x="8" y="12" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#fff">BC</text></svg>
+                    <span>Key Takeaway</span>
+                </div>
+                <h3>Two New BC Tables Replace Three Manual Inputs</h3>
+                <p>The Variant Mix Allocation table does double duty &mdash; it captures both the standard weekly percentages <strong>and</strong> regional mix differences (when one facility has different percentages than others) in a single table. No additional table is needed for regional exceptions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container"><hr class="divider"></div>
+
+<!-- ================================================================
+     TABLE 1: STORE → FACILITY MAPPING
+     ================================================================ -->
+<div class="container">
+    <div class="section-header">
+        <div class="section-label" style="color: var(--bc-blue);">BC Table 1</div>
+        <h2>Store-to-Facility Mapping</h2>
+        <p>Maps each HD store location to its default distribution facility for a given product subclass. This tells our planning systems where demand for each store should be routed.</p>
+    </div>
+
+    <!-- What it replaces -->
+    <div class="card">
+        <div class="card-header">
+            <h3>What This Replaces</h3>
+            <span class="badge badge-bc">Today: Manual</span>
+        </div>
+        <div class="card-body">
+            <p>Today, we maintain this data through custom site mapping spreadsheets. When programs are added or facility assignments change, we receive an updated file from Bell, manually parse it, and load it into our system each time.</p>
+            <p>With this data in a BC table, changes flow automatically through the standard data sync &mdash; no file handoffs, no delays, and <strong>one system of record</strong>. If someone needs to change a store's facility assignment, they can go directly into BC and update it without having to come to us first.</p>
+        </div>
+    </div>
+
+    <!-- Proposed schema -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Proposed Table Structure</h3>
+            <span class="badge badge-bc">Business Central</span>
+        </div>
+        <div class="card-body">
+            <p>We discussed a table with the following key columns:</p>
+            <ul style="margin: 12px 0 0 20px; list-style-type: disc;">
+                <li style="margin-bottom: 8px;"><strong><code>StoreCode</code></strong> &mdash; The HD store code (e.g., HD0105, HD2003)</li>
+                <li style="margin-bottom: 8px;"><strong><code>SubclassCode</code></strong> &mdash; Product subclass or program (e.g., ANNUALS, MUMS, TROPICALS)</li>
+                <li style="margin-bottom: 8px;"><strong><code>DefaultFacilityCode</code></strong> &mdash; The distribution facility that serves this store for this subclass (e.g., KY01, VA05, VA07, NC04, OH08, VA06, NRS)</li>
+                <li><strong><code>LastModifiedDate</code></strong> &mdash; Timestamp so we can pull only records that have changed since our last sync</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Example data -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Example Records</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Store</th>
+                            <th>Subclass</th>
+                            <th>Default Facility</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mono">HD0105</td>
+                            <td>ANNUALS</td>
+                            <td class="mono">NRS</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">HD0111</td>
+                            <td>ANNUALS</td>
+                            <td class="mono">KY01</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">HD0111</td>
+                            <td>MUMS</td>
+                            <td class="mono">KY01</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">HD0111</td>
+                            <td>TROPICALS</td>
+                            <td class="mono">VA06</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">HD2003</td>
+                            <td>ANNUALS</td>
+                            <td class="mono">VA05</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">HD2003</td>
+                            <td>BASKETS</td>
+                            <td class="mono">OH08</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="callout callout-forecast" style="margin-top: 20px;">
+                <strong>Note:</strong> The same store may route to different facilities depending on the product subclass. For example, HD0111 ships Annuals and Mums from KY01 but Tropicals from VA06.
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="container"><hr class="divider"></div>
+
+<!-- ================================================================
+     TABLE 2: VARIANT MIX ALLOCATION
+     ================================================================ -->
+<div class="container">
+    <div class="section-header">
+        <div class="section-label" style="color: var(--bc-blue);">BC Table 2</div>
+        <h2>Variant Mix Allocation</h2>
+        <p>Weekly mix percentages for each production variant, broken out by facility. This drives recipe construction and production scheduling in our planning systems.</p>
+    </div>
+
+    <!-- What it replaces -->
+    <div class="card">
+        <div class="card-header">
+            <h3>What This Replaces</h3>
+            <span class="badge badge-produce">Today: Manual</span>
+        </div>
+        <div class="card-body">
+            <p>Today, Bell maintains variant mix allocations in the <strong>"4M &mdash; Variant Mixes" Excel workbook</strong>. The file has separate sheets per facility (e.g., KY01, EVERYONE ELSE) with 52 weekly columns showing the percentage allocation for each variant.</p>
+            <p>When allocations change, the updated workbook is exported and sent to Silver Fern. We parse it, transform the weekly columns into date-ranged records, and load it into Produce. This is a full replacement each time &mdash; there is no incremental update.</p>
+        </div>
+    </div>
+
+    <!-- Current format -->
+    <div class="card">
+        <div class="card-header">
+            <h3>What We Receive Today (Excel Format)</h3>
+        </div>
+        <div class="card-body">
+            <p style="margin-bottom: 16px;">The Excel has fixed identifier columns followed by 52 weekly percentage columns:</p>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Common Item</th>
+                            <th>Prod. Item</th>
+                            <th>Variant</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 1</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 2</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">...</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 48</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 49</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 50</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 51</th>
+                            <th style="text-align:center;color:var(--text-muted);font-size:9px;">WK 52</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mono">KY01</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B01</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                            <td class="center">...</td>
+                            <td class="center">20%</td>
+                            <td class="center highlight-cell">40%</td>
+                            <td class="center highlight-cell">40%</td>
+                            <td class="center highlight-cell">40%</td>
+                            <td class="center">20%</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">KY01</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B02</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                            <td class="center">...</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                            <td class="center">20%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 12px; font-style: italic;">Highlighted cells show a seasonal shift &mdash; variant B01 increases from 20% to 40% during weeks 49&ndash;51.</p>
+        </div>
+    </div>
+
+    <!-- Proposed schema -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Proposed Table Structure</h3>
+            <span class="badge badge-bc">Business Central</span>
+        </div>
+        <div class="card-body">
+            <p style="margin-bottom: 16px;">Instead of 52 weekly columns, each week becomes its own row &mdash; a standard normalized format that is easy to query, filter, and sync incrementally.</p>
+            <div class="table-wrap">
+                <table class="schema-table">
+                    <thead>
+                        <tr>
+                            <th class="bc-header">Column</th>
+                            <th class="bc-header">Type</th>
+                            <th class="bc-header">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EntryNo <span class="pk-tag">PK</span></td>
+                            <td>Integer</td>
+                            <td>Auto-increment primary key</td>
+                        </tr>
+                        <tr>
+                            <td>LocationCode <span class="fk-tag">FK</span></td>
+                            <td>Code[10]</td>
+                            <td>Warehouse / facility (KY01, VA06, etc.)</td>
+                        </tr>
+                        <tr>
+                            <td>CommonItemNo</td>
+                            <td>Code[20]</td>
+                            <td>Sales item number (1MM &mdash; e.g., 1000190)</td>
+                        </tr>
+                        <tr>
+                            <td>ProductionItemNo <span class="fk-tag">FK</span></td>
+                            <td>Code[20]</td>
+                            <td>Production item number (4MM &mdash; e.g., 4000899)</td>
+                        </tr>
+                        <tr>
+                            <td>VariantCode</td>
+                            <td>Code[20]</td>
+                            <td>Production variant (e.g., 4000899B01, or <code>*</code> for wildcard)</td>
+                        </tr>
+                        <tr>
+                            <td>WeekNo</td>
+                            <td>Integer</td>
+                            <td>Calendar week number (1&ndash;53)</td>
+                        </tr>
+                        <tr>
+                            <td>MixPct</td>
+                            <td>Decimal</td>
+                            <td>Allocation percentage (0&ndash;100)</td>
+                        </tr>
+                        <tr>
+                            <td>SeasonYear</td>
+                            <td>Integer</td>
+                            <td>Planning year (2026, 2027)</td>
+                        </tr>
+                        <tr>
+                            <td>LastModifiedDate</td>
+                            <td>DateTime</td>
+                            <td>Timestamp for incremental sync</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Example records -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Example Records</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Common Item</th>
+                            <th>Prod. Item</th>
+                            <th>Variant</th>
+                            <th>Week</th>
+                            <th>Mix %</th>
+                            <th>Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mono">KY01</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B01</td>
+                            <td class="center">1</td>
+                            <td class="center">20</td>
+                            <td class="center">2026</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">KY01</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B01</td>
+                            <td class="center">49</td>
+                            <td class="center highlight-cell">40</td>
+                            <td class="center">2026</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">KY01</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B02</td>
+                            <td class="center">1</td>
+                            <td class="center">20</td>
+                            <td class="center">2026</td>
+                        </tr>
+                        <tr>
+                            <td class="mono">VA06</td>
+                            <td class="mono">1000190</td>
+                            <td class="mono">4000899</td>
+                            <td class="mono">4000899B01</td>
+                            <td class="center">1</td>
+                            <td class="center">25</td>
+                            <td class="center">2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="callout callout-produce" style="margin-top: 20px;">
+                <strong>Notice the LocationCode column.</strong> The same item can have different mix percentages at different facilities. In the example above, variant B01 is 20% at KY01 but 25% at VA06 for the same week. This is how regional mix differences are captured &mdash; no separate table required.
+            </div>
+        </div>
+    </div>
+
+    <!-- Why this structure -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Design Notes</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Why one row per week?</strong> The current pivoted Excel format (one column per week) is difficult to query and sync. One row per location/item/variant/week is a standard normalized structure &mdash; easy to filter, join, and pull via API.</p>
+            <p><strong>Why SeasonYear?</strong> This allows Bell to prepare next year's mix plan without overwriting the current one. Our system can pull the active season while Bell preps the next.</p>
+            <p><strong>Why LastModifiedDate?</strong> This enables incremental sync. Instead of replacing the full dataset every time, we query for records modified since the last sync and pull only the changes.</p>
+            <p><strong>Wildcard handling:</strong> Items that don't split by variant use <code>*</code> in the VariantCode column with 100% allocation. Same table, same structure &mdash; no special case.</p>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="container"><hr class="divider"></div>
+
+<!-- ================================================================
+     REGIONAL MIX — HANDLED BY TABLE 2
+     ================================================================ -->
+<div class="container">
+    <div class="section-header">
+        <div class="section-label" style="color: var(--sf-fern);">Production Item Regions &mdash; Resolved by Table 2</div>
+        <h2>Regional Mix Differences</h2>
+        <p>This is what we referred to as "ProductionItemRegions" during our call &mdash; the piece that was difficult to explain without the visual context. Here is a clearer breakdown of what it is and how it gets resolved.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <p>On our side, we maintain a mapping that tracks when a production item has <strong>different mix percentages depending on the region</strong>. For most items, every facility gets the same mix. But for a small number of items, the weekly percentages are different between facilities &mdash; for example, KY01 (which serves Central and Midwest stores) may get a cold-hardy variety at 100%, while other facilities get a blended mix.</p>
+            <p>Today, this is embedded inside the variant mix Excel as <strong>separate sheets per facility</strong> (e.g., "KY01" and "EVERYONE ELSE"). There is no standalone file for these regional exceptions &mdash; it is implicit in the fact that the two sheets have different values for the same item.</p>
+            <p>This is resolved by the Variant Mix Allocation table proposed above. Because that table includes a <strong>LocationCode</strong> column, facility-specific differences naturally show up as separate rows. Our system reads those differences and handles the regional routing internally. <strong>No additional BC table is needed.</strong></p>
+            <p>Bell's team continues to work the same way they already do &mdash; maintaining different mix percentages per facility &mdash; just in a BC table instead of separate Excel sheets.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container"><hr class="divider"></div>
+
+<!-- ================================================================
+     SUMMARY & NEXT STEPS
+     ================================================================ -->
+<div class="container">
+    <div class="section-header">
+        <div class="section-label" style="color: var(--sf-fern);">Summary</div>
+        <h2>Next Steps</h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body" style="padding: 0;">
+            <div class="table-wrap">
+                <table class="next-steps-table">
+                    <thead>
+                        <tr>
+                            <th>BC Table</th>
+                            <th>Bell Action</th>
+                            <th>Silver Fern Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Store &rarr; Facility Mapping</strong></td>
+                            <td>Build BC table with Store + Subclass + Default Facility. User-editable, included in daily data dump.</td>
+                            <td>Build automated sync from the daily data dump into our planning systems.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Variant Mix Allocation</strong><br><span style="font-size: 11px; color: var(--text-muted);">Also covers regional mix differences</span></td>
+                            <td>Build BC table with weekly mix % by variant. <strong>Include LocationCode</strong> so facility-specific mixes are captured as separate rows.</td>
+                            <td>Build automated sync. Transform facility-level differences into regional assignments on our side.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Suggested Timeline</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>1.</strong> &nbsp;Schedule one more follow-up meeting to review the BC table structures and align on the final column definitions before Bell begins building.</p>
+            <p><strong>2.</strong> &nbsp;Bell builds both tables in BC (can be developed in parallel).</p>
+            <p><strong>3.</strong> &nbsp;Silver Fern builds the automated sync pipeline for each table.</p>
+            <p><strong>4.</strong> &nbsp;Silver Fern conducts internal testing to verify that the data flows through correctly and produces the expected output on our side.</p>
+            <p><strong>5.</strong> &nbsp;Joint validation to confirm data accuracy against current manual outputs and sign off.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<div class="footer">
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <!-- SF Logo — For On Dark (small) -->
+                <svg viewBox="0 0 284.01 55.14" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 22px; width: auto;"><defs><style>.ft1{fill:#69936c;}.ft2{fill:rgba(255,255,255,0.7);}</style></defs><g><path class="ft1" d="M51.9,21.72A25,25,0,0,1,6.61,41.21a92.42,92.42,0,0,0,13.08-9.36A127.61,127.61,0,0,1,37.31,19.11c.8-.49,1.6-.95,2.39-1.39,1.13-.64,4.26-2.21,4.47-2.33.41-.25.76-.53,1.11-.78a1.49,1.49,0,0,0,.14-.12,6.43,6.43,0,0,0,1.88-2.28A6.23,6.23,0,0,0,48,9.38a3.76,3.76,0,0,0-2,1.22A7,7,0,0,0,44.63,13c-.08.24-.13.43-.16.51a2.66,2.66,0,0,1-1.39,1.48c-1.07.49-2.08,1-3.07,1.43a21.76,21.76,0,0,0,1.7-6.08,5.72,5.72,0,0,0-.12-1.69c-3.38,1.38-2.68,5.26-3,6.61a5.08,5.08,0,0,1-2.44,3.19c-.46.26-.9.5-1.34.76,0,0,.64-1.93.77-2.64a25.57,25.57,0,0,0,.35-7l-.27.15a4.58,4.58,0,0,0-2.25,2.61c-.24.84-.25,5.33-.43,6.14a5.19,5.19,0,0,1-2.31,3.19l-2.28,1.47.3-.65a13,13,0,0,0,.81-2.3,48.82,48.82,0,0,0,.46-9.75l-.11.07a8,8,0,0,0-3,3.61c-.67,1.6-.3,6.39-.7,8.7A5,5,0,0,1,24.09,26c-.89.64-1.77,1.24-2.64,1.86,0,0,.85-2.8,1-3.88a45,45,0,0,0,.35-12.22A7.79,7.79,0,0,0,19.26,16c-.54,2,0,10-.55,12.3a5,5,0,0,1-1.93,2.78c-1.2.86-2.5,1.77-2.5,1.77a21.32,21.32,0,0,0,1.15-3.66c.54-3.36,0-11.53-.3-13.76-.91.66-3.36,2-4,5-.46,2.13.89,9.52.72,11.22A5.61,5.61,0,0,1,8.5,36.06L4.66,37.62A25,25,0,0,1,44.08,8.79,15.22,15.22,0,0,1,46,7.08a27.53,27.53,0,1,0,8.48,14.46A13.53,13.53,0,0,1,51.9,21.72Z"/><path class="ft1" d="M51.09,11.94a2.53,2.53,0,0,0-.61.28l-.08.06a6.57,6.57,0,0,0-1.73,1.82l-.11.16.23,0a13.78,13.78,0,0,0,3,.26,4.25,4.25,0,0,0,.84-.12A4.83,4.83,0,0,0,53.68,14,7.78,7.78,0,0,0,54.9,13c.26-.24.51-.49.77-.78-.33-.09-.75-.18-1.21-.26A8,8,0,0,0,51.09,11.94Z"/><path class="ft1" d="M17.29,37.79a6.89,6.89,0,0,0-2.93,1c-.22.13-.44.28-.66.44l-.81.59A46.51,46.51,0,0,1,19,41.72c.81.29,2.58,1.2,4.14,2,1.29.66,2.63,1.35,2.9,1.41a6.11,6.11,0,0,0,4.54-.77,6.17,6.17,0,0,0,.81-.57c-1.57-1.13-7.74-5.16-10.64-5.79A11.54,11.54,0,0,0,17.29,37.79Z"/><path class="ft1" d="M24.89,32.39a6.63,6.63,0,0,0-2.74,1,7.29,7.29,0,0,0-.88.61l-.84.66A44.18,44.18,0,0,1,27,36.07c.55.15,2,.74,3.41,1.31,1.12.46,2.29.93,2.53,1a5.48,5.48,0,0,0,4-.68c.24-.15.44-.3.61-.43-1.52-1-7.32-4.23-9.85-4.74A9.3,9.3,0,0,0,24.89,32.39Z"/><path class="ft1" d="M30.89,27a6,6,0,0,0-2.64.9,5.82,5.82,0,0,0-.66.44l-.71.55a36.93,36.93,0,0,1,5.89,1.38c.47.13,1.58.54,2.6.91s1.82.67,2.06.73a5.17,5.17,0,0,0,3.94-.61l.28-.18c-1.35-.91-5.89-3.41-8.22-3.93A8.37,8.37,0,0,0,30.89,27Z"/><path class="ft1" d="M37.12,22.84a5.12,5.12,0,0,0-2.47.76l-.76.52a33.8,33.8,0,0,1,4.78,1.28c.41.13,1.19.49,1.9.82s1.13.52,1.33.57a4.48,4.48,0,0,0,3.43-.41,25.06,25.06,0,0,0-6.1-3.3A7.17,7.17,0,0,0,37.12,22.84Z"/><path class="ft1" d="M42.83,19.77a5.94,5.94,0,0,0-1.79.06,7.23,7.23,0,0,0-1.77.8c.67.15,1.56.43,2.48.74,1.27.43,2.41.93,3.42,1.31l1.26.45a5,5,0,0,0,3.26-.24h0l-.06-.07A7.66,7.66,0,0,0,46.79,21,32.08,32.08,0,0,0,42.83,19.77Z"/><path class="ft1" d="M47.4,18.49a8.42,8.42,0,0,0,5.85.36A9.19,9.19,0,0,0,49.11,17a7.55,7.55,0,0,0-4.35.71A14.79,14.79,0,0,1,47.4,18.49Z"/><path class="ft2" d="M80.63,21.18a5.49,5.49,0,0,0-3-1.13c-2.16-.06-3.69.94-3.77,2.6-.08,1.25.64,2.11,1.94,2.74l4.27,2.14c2.08,1,3.27,2.46,3.27,4.54,0,3-2.44,5.49-6.24,5.46a7.88,7.88,0,0,1-5.82-2.44L73,33.4a6,6,0,0,0,4.24,1.69c2.25,0,3.61-1.27,3.61-2.91,0-.91-.45-1.77-2-2.52l-4.16-2c-2.44-1.17-3.49-3.05-3.35-5.13.19-3.27,3.08-5.12,6.46-4.88a7.66,7.66,0,0,1,4.68,1.92Z"/><rect class="ft2" x="93.46" y="17.86" width="2.52" height="19.4"/><polygon class="ft2" points="118.44 34.81 118.44 37.25 107.08 37.25 107.08 17.86 109.6 17.86 109.6 34.81 118.44 34.81"/><polygon class="ft2" points="141.28 17.86 132.39 37.25 123.47 17.86 126.29 17.86 132.39 31.3 138.46 17.86 141.28 17.86"/><polygon class="ft2" points="162.21 34.81 162.21 37.25 150.82 37.25 150.82 17.86 161.88 17.86 161.88 20.3 153.34 20.3 153.34 26.47 160.3 26.47 160.3 28.66 153.34 28.66 153.34 34.81 162.21 34.81"/><path class="ft2" d="M186.15,37.25h-2.71l-1.58-4.54c-.61-1.72-1.08-2.63-2.75-2.63h-4.23v7.17h-2.53V17.86h7.15A6.17,6.17,0,0,1,185.79,24a6,6,0,0,1-3.24,5.32,6,6,0,0,1,1.66,2.6Zm-6.79-9.36A3.84,3.84,0,0,0,183.27,24a3.72,3.72,0,0,0-3.91-3.75h-4.48v7.6Z"/><polygon class="ft2" points="205.64 20.3 205.64 26.47 212.81 26.47 212.81 28.66 205.64 28.66 205.64 37.25 203.12 37.25 203.12 17.86 214.4 17.86 214.4 20.3 205.64 20.3"/><polygon class="ft2" points="235.93 34.81 235.93 37.25 224.54 37.25 224.54 17.86 235.6 17.86 235.6 20.3 227.06 20.3 227.06 26.47 234.02 26.47 234.02 28.66 227.06 28.66 227.06 34.81 235.93 34.81"/><path class="ft2" d="M259.87,37.25h-2.71l-1.58-4.54c-.61-1.72-1.08-2.63-2.75-2.63H248.6v7.17h-2.53V17.86h7.15A6.17,6.17,0,0,1,259.51,24a6,6,0,0,1-3.24,5.32,6,6,0,0,1,1.66,2.6Zm-6.79-9.36A3.84,3.84,0,0,0,257,24a3.72,3.72,0,0,0-3.91-3.75H248.6v7.6Z"/><polygon class="ft2" points="284.01 17.86 284.01 37.25 272.54 24.51 272.54 37.25 270.02 37.25 270.02 17.86 281.52 30.66 281.52 17.86 284.01 17.86"/></g></svg>
+                <span class="footer-text">Silver Fern Technology &middot; Bell Nursery</span>
+            </div>
+            <div class="footer-right">Confidential &mdash; February 2026</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
