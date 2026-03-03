@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLN Forecast — South Atlantic Region Split</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;1,300&family=PT+Serif:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sf-rich-soil: #3F4948;
+  --sf-fern: #69936C;
+  --sf-stirling-silver: #B3B3B3;
+  --sf-light-silver: #F2F2F2;
+  --sf-spring-green: #A1DBA6;
+  --sf-font-heading: 'Montserrat', Arial, sans-serif;
+  --sf-font-subheading: 'PT Serif', Georgia, serif;
+  --sf-font-body: 'Montserrat', Arial, sans-serif;
+  --sf-heading-tracking: 0.125em;
+
+  --red-soft: #D94F4F;
+  --red-bg: #FFF0F0;
+  --yellow-soft: #D4A017;
+  --yellow-bg: #FFFBE6;
+  --green-soft: #3A8A3E;
+  --green-bg: #F0FFF0;
+  --blue-soft: #3A6EA5;
+  --blue-bg: #F0F5FF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sf-font-body);
+  font-weight: 300;
+  color: var(--sf-rich-soil);
+  background: #fff;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.header {
+  background: var(--sf-rich-soil);
+  color: #fff;
+  padding: 28px 40px 20px;
+}
+
+.header h1 {
+  font-family: var(--sf-font-heading);
+  font-weight: 600;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: var(--sf-heading-tracking);
+  margin-bottom: 4px;
+}
+
+.header .subtitle {
+  font-family: var(--sf-font-subheading);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--sf-spring-green);
+}
+
+.header .meta {
+  font-size: 12px;
+  color: var(--sf-stirling-silver);
+  margin-top: 8px;
+}
+
+/* Tabs */
+.tab-bar {
+  display: flex;
+  background: var(--sf-light-silver);
+  border-bottom: 2px solid var(--sf-stirling-silver);
+  padding: 0 40px;
+  gap: 2px;
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  font-family: var(--sf-font-heading);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sf-rich-soil);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  opacity: 0.6;
+}
+
+.tab-btn:hover { opacity: 0.85; }
+
+.tab-btn.active {
+  opacity: 1;
+  border-bottom-color: var(--sf-fern);
+  background: #fff;
+}
+
+.tab-content {
+  display: none;
+  padding: 32px 40px 60px;
+  max-width: 1100px;
+}
+
+.tab-content.active { display: block; }
+
+/* Typography */
+h2 {
+  font-family: var(--sf-font-subheading);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--sf-fern);
+  margin: 32px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sf-light-silver);
+}
+
+h2:first-child { margin-top: 0; }
+
+h3 {
+  font-family: var(--sf-font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--sf-rich-soil);
+  margin: 24px 0 8px;
+}
+
+h4 {
+  font-family: var(--sf-font-heading);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--sf-fern);
+  margin: 16px 0 6px;
+}
+
+p { margin: 8px 0; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 20px;
+  font-size: 13px;
+}
+
+th {
+  background: var(--sf-rich-soil);
+  color: #fff;
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+tr:nth-child(even) { background: var(--sf-light-silver); }
+tr:hover { background: #e8f0e8; }
+
+/* Code blocks */
+pre {
+  background: #1e2a2a;
+  color: #e0e8e0;
+  padding: 16px 20px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 10px 0 16px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+pre .comment { color: #6a9a6a; }
+pre .keyword { color: #7EB8DA; }
+pre .string { color: #C5A66E; }
+pre .highlight { background: rgba(161, 219, 166, 0.15); display: inline; }
+
+code {
+  background: var(--sf-light-silver);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12.5px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* Callout boxes */
+.callout {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin: 14px 0;
+  border-left: 4px solid;
+}
+
+.callout-red { background: var(--red-bg); border-color: var(--red-soft); }
+.callout-yellow { background: var(--yellow-bg); border-color: var(--yellow-soft); }
+.callout-green { background: var(--green-bg); border-color: var(--green-soft); }
+.callout-blue { background: var(--blue-bg); border-color: var(--blue-soft); }
+
+.callout strong { display: block; margin-bottom: 4px; }
+.callout-red strong { color: var(--red-soft); }
+.callout-yellow strong { color: var(--yellow-soft); }
+.callout-green strong { color: var(--green-soft); }
+.callout-blue strong { color: var(--blue-soft); }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+.badge-dev { background: #E8D5F5; color: #6B3FA0; }
+.badge-claude { background: #D5E8F5; color: #2A6496; }
+.badge-decision { background: #F5E6D5; color: #A0653F; }
+.badge-safe { background: var(--green-bg); color: var(--green-soft); }
+.badge-breaks { background: var(--red-bg); color: var(--red-soft); }
+
+/* Step cards */
+.step {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 14px 0;
+  position: relative;
+}
+
+.step-num {
+  position: absolute;
+  top: -10px;
+  left: 18px;
+  background: var(--sf-fern);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.step-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding-left: 24px;
+}
+
+.step-body { margin-top: 8px; }
+
+/* Phase headers */
+.phase {
+  background: var(--sf-rich-soil);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  margin: 28px 0 16px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.phase:first-of-type { margin-top: 16px; }
+
+/* Diagram */
+.diagram {
+  background: #1e2a2a;
+  color: #e0e8e0;
+  padding: 20px 24px;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 14px 0 20px;
+}
+
+.diagram .red { color: #E87070; }
+.diagram .green { color: var(--sf-spring-green); }
+.diagram .yellow { color: #E8D070; }
+.diagram .blue { color: #70B0E8; }
+.diagram .dim { color: #6a7a7a; }
+
+/* Lists */
+ul, ol { margin: 8px 0 8px 24px; }
+li { margin: 4px 0; }
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid var(--sf-light-silver);
+  margin: 24px 0;
+}
+
+/* Print */
+@media print {
+  .tab-bar { display: none; }
+  .tab-content { display: block !important; page-break-before: always; }
+  .tab-content:first-of-type { page-break-before: avoid; }
+  .header { background: #fff; color: var(--sf-rich-soil); border-bottom: 2px solid var(--sf-rich-soil); }
+  .header .subtitle { color: var(--sf-fern); }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>South Atlantic Region Split</h1>
+  <div class="subtitle">BLN Forecast — Testing Plan &amp; Migration Strategy</div>
+  <div class="meta">Internal &bull; March 2, 2026 &bull; QADB_FORECAST (testing) / BLN_FORECAST (production)</div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('testing')">Testing Plan</button>
+  <button class="tab-btn" onclick="switchTab('migration')">Migration Strategy</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TAB 1: TESTING PLAN                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-testing" class="tab-content active">
+
+<h2>Context</h2>
+<p>Bell Nursery plans to split the <strong>SOUTH ATLANTIC</strong> region into 4 sub-regions: <strong>SA CLT</strong>, <strong>SA WEST</strong>, <strong>SA EAST</strong>, and <strong>SA NONCORE</strong>. The change originates from the <code>CUST_REGION</code> field in Bell's <code>customer_data.csv</code>, which feeds our daily ETL via <code>Import.usp_ImportForecastCustomers</code>.</p>
+
+<p>This document provides a step-by-step plan to test the split in <strong>QADB_FORECAST</strong> before it goes live in production.</p>
+
+<div class="callout callout-red">
+  <strong>Critical Risk</strong>
+  Existing forecasts will <em>silently lose all South Atlantic data</em> from the export pipeline after the split. The export view's INNER JOIN on RegionID returns 0 rows when locations move to new IDs. There is no error or warning &mdash; the data simply disappears from exports.
+</div>
+
+<h2>QADB Baseline (captured March 2, 2026)</h2>
+
+<table>
+  <tr><th>Table</th><th>SA Rows</th><th>Details</th></tr>
+  <tr><td><code>Customer.Regions</code></td><td>1</td><td>SOUTH ATLANTIC = RegionID <strong>62</strong></td></tr>
+  <tr><td><code>Customer.Locations</code></td><td>133</td><td>NC(40), VA(29), TN(28), SC(21), KY(8), WV(3), GA(2), IN(2)</td></tr>
+  <tr><td><code>Plan.WeeklyDistribution</code></td><td>14,736</td><td>All from Forecast 203 (Cal_2026 Annuals)</td></tr>
+  <tr><td><code>Plan.RegionForecasts</code></td><td>283</td><td>All from Forecast 203</td></tr>
+  <tr><td><code>Data.WeeklyRetailHistory</code></td><td>3,555</td><td>Years 2019&ndash;2023, 17&ndash;22 product groups/year</td></tr>
+  <tr><td><code>Product.ProductionItemRegions</code></td><td>0</td><td><em>Empty in QADB</em> (production has 8 SA entries)</td></tr>
+  <tr><td><code>Customer.SiteMaps</code></td><td>133/program</td><td>Joins on LocationID &mdash; <strong>not affected</strong></td></tr>
+</table>
+
+<h4>SA Location Distribution by Site (QADB)</h4>
+<table>
+  <tr><th>Program</th><th>KY01</th><th>VA07</th><th>VA05</th><th>NC04</th><th>NRS</th><th>HD0711</th><th>Total</th></tr>
+  <tr><td>ANNUALS</td><td>26</td><td>85</td><td>&mdash;</td><td>&mdash;</td><td>21</td><td>1</td><td>133</td></tr>
+  <tr><td>BASKETS</td><td>26</td><td>85</td><td>&mdash;</td><td>&mdash;</td><td>21</td><td>&mdash;</td><td>132</td></tr>
+  <tr><td>MUMS</td><td>13</td><td>82</td><td>&mdash;</td><td>16</td><td>21</td><td>&mdash;</td><td>132</td></tr>
+  <tr><td>VEGETABLES</td><td>13</td><td>&mdash;</td><td>98</td><td>&mdash;</td><td>21</td><td>1</td><td>133</td></tr>
+</table>
+
+<h4>WeeklyRetailHistory for SA by Year</h4>
+<table>
+  <tr><th>Year</th><th>Rows</th><th>Product Groups</th></tr>
+  <tr><td>2019</td><td>620</td><td>17</td></tr>
+  <tr><td>2020</td><td>699</td><td>18</td></tr>
+  <tr><td>2021</td><td>782</td><td>22</td></tr>
+  <tr><td>2022</td><td>883</td><td>21</td></tr>
+  <tr><td>2023</td><td>571</td><td>21</td></tr>
+</table>
+
+<hr>
+
+<h2>Test Steps</h2>
+
+<p>
+  <span class="badge badge-claude">CLAUDE</span> = Read-only, can be run now &nbsp;
+  <span class="badge badge-dev">DEVELOPER</span> = Needs Stephen (writes/executes procs) &nbsp;
+  <span class="badge badge-decision">DECISION</span> = Needs input before proceeding
+</p>
+
+<!-- Phase A -->
+<div class="phase">Phase A &mdash; Pre-Split Baseline</div>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Record current QADB state</div>
+  <div class="step-body">
+    <p><strong>Status: COMPLETE</strong> &mdash; See baseline tables above. All counts captured March 2, 2026.</p>
+  </div>
+</div>
+
+<!-- Phase B -->
+<div class="phase">Phase B &mdash; Simulate the Region Split</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-title"><span class="badge badge-decision">DECISION</span> Define sub-regions and location mapping</div>
+  <div class="step-body">
+    <p>Before we can simulate, we need to know <strong>which stores go to which sub-region</strong>. This mapping comes from Bell's <code>CUST_REGION</code> values in <code>customer_data.csv</code>.</p>
+    <p><strong>Need from Bell:</strong> The proposed CUST_REGION values and which stores map to each. Or, we make a test assumption (e.g., split by state) for QADB testing:</p>
+    <table>
+      <tr><th>Sub-Region</th><th>States (example)</th><th>Locations</th></tr>
+      <tr><td>SA CLT</td><td>NC</td><td>40</td></tr>
+      <tr><td>SA WEST</td><td>TN, KY, IN</td><td>38</td></tr>
+      <tr><td>SA EAST</td><td>SC, GA</td><td>23</td></tr>
+      <tr><td>SA NONCORE</td><td>VA, WV</td><td>32</td></tr>
+    </table>
+    <p><em>These are placeholder assumptions. The actual mapping from Bell will likely differ.</em></p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Insert 4 new regions into Customer.Regions</div>
+  <div class="step-body">
+    <p>This simulates what the ETL's INSERT-only logic does when it sees new <code>CUST_REGION</code> values.</p>
+<pre><span class="comment">-- Simulates ETL INSERT-only behavior for new regions</span>
+<span class="keyword">INSERT INTO</span> Customer.Regions (Region) <span class="keyword">VALUES</span> (<span class="string">'SA CLT'</span>);
+<span class="keyword">INSERT INTO</span> Customer.Regions (Region) <span class="keyword">VALUES</span> (<span class="string">'SA WEST'</span>);
+<span class="keyword">INSERT INTO</span> Customer.Regions (Region) <span class="keyword">VALUES</span> (<span class="string">'SA EAST'</span>);
+<span class="keyword">INSERT INTO</span> Customer.Regions (Region) <span class="keyword">VALUES</span> (<span class="string">'SA NONCORE'</span>);
+
+<span class="comment">-- Record the new IDs (auto-increment)</span>
+<span class="keyword">SELECT</span> ID, Region <span class="keyword">FROM</span> Customer.Regions
+<span class="keyword">WHERE</span> Region <span class="keyword">IN</span> (<span class="string">'SA CLT'</span>, <span class="string">'SA WEST'</span>, <span class="string">'SA EAST'</span>, <span class="string">'SA NONCORE'</span>);</pre>
+    <p>Note the assigned IDs &mdash; they'll be needed in all subsequent steps.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Reassign locations to new sub-regions</div>
+  <div class="step-body">
+    <p>Simulates what the ETL MERGE does when <code>CUST_REGION</code> changes in the import CSV. Replace <code>&lt;ID&gt;</code> placeholders with actual IDs from step 3, and adjust state mapping per Bell's actual plan.</p>
+<pre><span class="comment">-- SA CLT = NC stores (40 locations)</span>
+<span class="keyword">UPDATE</span> Customer.Locations <span class="keyword">SET</span> RegionID = <span class="string">&lt;SA_CLT_ID&gt;</span>
+<span class="keyword">WHERE</span> RegionID = 62
+  <span class="keyword">AND</span> Location <span class="keyword">LIKE</span> <span class="string">'%[NC]%'</span>;
+
+<span class="comment">-- SA WEST = TN, KY, IN stores (38 locations)</span>
+<span class="keyword">UPDATE</span> Customer.Locations <span class="keyword">SET</span> RegionID = <span class="string">&lt;SA_WEST_ID&gt;</span>
+<span class="keyword">WHERE</span> RegionID = 62
+  <span class="keyword">AND</span> (Location <span class="keyword">LIKE</span> <span class="string">'%[TN]%'</span>
+    <span class="keyword">OR</span> Location <span class="keyword">LIKE</span> <span class="string">'%[KY]%'</span>
+    <span class="keyword">OR</span> Location <span class="keyword">LIKE</span> <span class="string">'%[IN]%'</span>);
+
+<span class="comment">-- SA EAST = SC, GA stores (23 locations)</span>
+<span class="keyword">UPDATE</span> Customer.Locations <span class="keyword">SET</span> RegionID = <span class="string">&lt;SA_EAST_ID&gt;</span>
+<span class="keyword">WHERE</span> RegionID = 62
+  <span class="keyword">AND</span> (Location <span class="keyword">LIKE</span> <span class="string">'%[SC]%'</span>
+    <span class="keyword">OR</span> Location <span class="keyword">LIKE</span> <span class="string">'%[GA]%'</span>);
+
+<span class="comment">-- SA NONCORE = everything remaining (VA, WV = 32 locations)</span>
+<span class="keyword">UPDATE</span> Customer.Locations <span class="keyword">SET</span> RegionID = <span class="string">&lt;SA_NONCORE_ID&gt;</span>
+<span class="keyword">WHERE</span> RegionID = 62;</pre>
+    <div class="callout callout-yellow">
+      <strong>Important</strong>
+      Run these in order &mdash; the last UPDATE catches anything remaining under RegionID 62. After all 4 UPDATEs, SOUTH ATLANTIC should have <strong>0 locations</strong>.
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">5</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify location reassignment</div>
+  <div class="step-body">
+<pre><span class="comment">-- Confirm SOUTH ATLANTIC has 0 locations, new sub-regions have correct counts</span>
+<span class="keyword">SELECT</span> r.ID, r.Region, <span class="keyword">COUNT</span>(l.ID) <span class="keyword">AS</span> LocationCount
+<span class="keyword">FROM</span> Customer.Regions r
+<span class="keyword">LEFT JOIN</span> Customer.Locations l <span class="keyword">ON</span> l.RegionID = r.ID
+<span class="keyword">WHERE</span> r.Region <span class="keyword">LIKE</span> <span class="string">'SA %'</span> <span class="keyword">OR</span> r.Region = <span class="string">'SOUTH ATLANTIC'</span>
+<span class="keyword">GROUP BY</span> r.ID, r.Region
+<span class="keyword">ORDER BY</span> r.Region;</pre>
+    <p><strong>Expected:</strong> SOUTH ATLANTIC = 0, four sub-regions sum to 133.</p>
+  </div>
+</div>
+
+<!-- Phase C -->
+<div class="phase">Phase C &mdash; Test Impact on Existing Data</div>
+
+<div class="step">
+  <div class="step-num">6</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify WeeklyDistribution join breakage <span class="badge badge-breaks">CRITICAL</span></div>
+  <div class="step-body">
+    <p>This is the most important test. <code>vwWeeklySiteDistribution</code> INNER JOINs <code>WeeklyDistribution.RegionID</code> to <code>Locations.RegionID</code>. After the split, no locations have RegionID=62, so the join returns <strong>0 rows</strong>.</p>
+<pre><span class="comment">-- Simulate the Map CTE join from vwWeeklySiteDistribution</span>
+<span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> JoinedRows
+<span class="keyword">FROM</span> [Plan].WeeklyDistribution wd
+<span class="keyword">INNER JOIN</span> Customer.Locations l <span class="keyword">ON</span> l.RegionID = wd.RegionID
+<span class="keyword">WHERE</span> wd.RegionID = 62;
+
+<span class="comment">-- EXPECTED: 0 (was 14,736 before the split)</span>
+<span class="comment">-- This proves the silent data loss in the export pipeline</span></pre>
+
+    <div class="diagram"><span class="dim">BEFORE SPLIT:</span>
+WeeklyDistribution (RegionID=62) ──INNER JOIN──&gt; Locations (RegionID=62) = <span class="green">14,736 rows</span>
+
+<span class="dim">AFTER SPLIT:</span>
+WeeklyDistribution (RegionID=62) ──INNER JOIN──&gt; Locations (RegionID=62) = <span class="red">0 rows</span>
+                                                  <span class="dim">^^^ no locations have this ID anymore</span>
+
+<span class="dim">THE BREAK POINT (in vwWeeklySiteDistribution):</span>
+<span class="blue">Map CTE</span>: Customer.Locations L
+         INNER JOIN Customer.SiteMaps SM ON SM.LocationID = L.ID  <span class="green">&lt;-- safe (LocationID)</span>
+         ...produces Map.RegionID = L.RegionID (now the NEW sub-region IDs)
+
+<span class="blue">RawDist CTE</span>: Plan.WeeklyDistribution WD
+              INNER JOIN <span class="blue">Map</span> M ON <span class="red">M.RegionID = WD.RegionID</span>  <span class="red">&lt;-- BREAKS HERE</span>
+              <span class="dim">Map has new IDs (65,66,67,68), WD still has old ID (62)</span></div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">7</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify RegionForecasts impact</div>
+  <div class="step-body">
+<pre><span class="comment">-- RegionForecasts rows still reference the old RegionID=62</span>
+<span class="comment">-- The region still EXISTS (insert-only), but has 0 locations</span>
+<span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> OrphanedRF
+<span class="keyword">FROM</span> [Plan].RegionForecasts
+<span class="keyword">WHERE</span> RegionID = 62;
+
+<span class="comment">-- EXPECTED: 283 (orphaned rows pointing to a region with no locations)</span></pre>
+    <p>If <code>GenerateForecastRegions</code> is run, these 283 rows get <strong>deleted</strong> and new rows for the sub-regions are created &mdash; but with <strong>zero forecast values</strong>. All user-entered numbers are lost.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">8</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify WeeklyRetailHistory impact</div>
+  <div class="step-body">
+<pre><span class="comment">-- Historical retail data is still under RegionID=62</span>
+<span class="comment">-- New sub-regions have 0 history rows</span>
+<span class="keyword">SELECT</span> wrh.RegionID, r.Region, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> Rows
+<span class="keyword">FROM</span> Data.WeeklyRetailHistory wrh
+<span class="keyword">JOIN</span> Customer.Regions r <span class="keyword">ON</span> r.ID = wrh.RegionID
+<span class="keyword">WHERE</span> wrh.RegionID = 62
+   <span class="keyword">OR</span> wrh.RegionID <span class="keyword">IN</span> (<span class="string">&lt;new sub-region IDs&gt;</span>)
+<span class="keyword">GROUP BY</span> wrh.RegionID, r.Region;
+
+<span class="comment">-- EXPECTED: 3,555 rows under RegionID=62, 0 under new sub-regions</span></pre>
+    <p><code>ForecastWeeklyDistribution</code> uses this history to calculate weekly distribution patterns. With zero history, the weekly allocation algorithm has nothing to work with for the new sub-regions.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">9</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify SiteMaps are unaffected <span class="badge badge-safe">SAFE</span></div>
+  <div class="step-body">
+<pre><span class="comment">-- SiteMaps join on LocationID, not RegionID -- should be unaffected</span>
+<span class="keyword">SELECT</span> sm.ProgramID, p.Program, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> MappedLocations
+<span class="keyword">FROM</span> Customer.SiteMaps sm
+<span class="keyword">JOIN</span> Customer.Locations l <span class="keyword">ON</span> l.ID = sm.LocationID
+<span class="keyword">JOIN</span> Product.Programs p <span class="keyword">ON</span> p.ID = sm.ProgramID
+<span class="keyword">WHERE</span> l.RegionID <span class="keyword">IN</span> (<span class="string">&lt;new sub-region IDs&gt;</span>)
+<span class="keyword">GROUP BY</span> sm.ProgramID, p.Program;
+
+<span class="comment">-- EXPECTED: Same totals as before, just spread across new RegionIDs</span></pre>
+  </div>
+</div>
+
+<!-- Phase D -->
+<div class="phase">Phase D &mdash; Test Forecast Regeneration</div>
+
+<div class="step">
+  <div class="step-num">10</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Run GenerateForecastRegions for Forecast 203</div>
+  <div class="step-body">
+    <p>This proc DELETEs all RegionForecasts and re-INSERTs from current <code>Location.RegionID</code> values. After the split, it creates rows for the 4 new sub-regions but with <strong>empty forecast values</strong>.</p>
+<pre><span class="keyword">EXEC</span> [Plan].GenerateForecastRegions @ForecastID = 203;
+
+<span class="comment">-- Verify: new sub-regions should have rows, old SA should be gone</span>
+<span class="keyword">SELECT</span> rf.RegionID, r.Region, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> Rows,
+       <span class="keyword">SUM</span>(rf.Override) <span class="keyword">AS</span> TotalOverride
+<span class="keyword">FROM</span> [Plan].RegionForecasts rf
+<span class="keyword">JOIN</span> Customer.Regions r <span class="keyword">ON</span> r.ID = rf.RegionID
+<span class="keyword">WHERE</span> rf.ForecastID = 203
+  <span class="keyword">AND</span> (r.Region <span class="keyword">LIKE</span> <span class="string">'SA %'</span> <span class="keyword">OR</span> r.Region = <span class="string">'SOUTH ATLANTIC'</span>)
+<span class="keyword">GROUP BY</span> rf.RegionID, r.Region;</pre>
+    <p><strong>Expected:</strong> 4 new sub-regions with rows, TotalOverride = NULL/0 on all. Old SOUTH ATLANTIC rows are gone.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">11</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Test ForecastWeeklyDistribution pipeline</div>
+  <div class="step-body">
+<pre><span class="comment">-- Set RLS context</span>
+<span class="keyword">INSERT INTO</span> dbo.ForecastCurrent (SystemUser, HostName, ForecastID, CreatedAt, [Override])
+<span class="keyword">VALUES</span> (SUSER_NAME(), HOST_NAME(), 203, GETDATE(), 1);
+
+<span class="comment">-- Run the distribution pipeline</span>
+<span class="keyword">EXEC</span> [Plan].ForecastWeeklyDistribution @ForecastID = 203;
+
+<span class="comment">-- Check: do the new sub-regions get WeeklyDistribution rows?</span>
+<span class="keyword">SELECT</span> wd.RegionID, r.Region, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> Rows,
+       <span class="keyword">SUM</span>(wd.WeeklyQty) <span class="keyword">AS</span> TotalQty
+<span class="keyword">FROM</span> [Plan].WeeklyDistribution wd
+<span class="keyword">JOIN</span> Customer.Regions r <span class="keyword">ON</span> r.ID = wd.RegionID
+<span class="keyword">WHERE</span> wd.ForecastID = 203
+  <span class="keyword">AND</span> (r.Region <span class="keyword">LIKE</span> <span class="string">'SA %'</span> <span class="keyword">OR</span> r.Region = <span class="string">'SOUTH ATLANTIC'</span>)
+<span class="keyword">GROUP BY</span> wd.RegionID, r.Region;
+
+<span class="comment">-- CLEAN UP RLS</span>
+<span class="keyword">DELETE FROM</span> dbo.ForecastCurrent
+<span class="keyword">WHERE</span> SystemUser = SUSER_NAME() <span class="keyword">AND</span> HostName = HOST_NAME();</pre>
+    <p><strong>Watch for:</strong> New sub-regions may get 0 WeeklyQty because there's no WeeklyRetailHistory for them to distribute against.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">12</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Test export chain end-to-end</div>
+  <div class="step-body">
+<pre><span class="comment">-- With RLS context set for Forecast 203:</span>
+<span class="keyword">SELECT TOP</span> 50 *
+<span class="keyword">FROM</span> [Plan].vwWeeklySiteDistribution
+<span class="keyword">WHERE</span> Site <span class="keyword">IN</span> (<span class="string">'KY01'</span>, <span class="string">'VA07'</span>, <span class="string">'NC04'</span>, <span class="string">'VA05'</span>);
+
+<span class="comment">-- Check: Do SA-area stores show up? With what quantities?</span>
+<span class="comment">-- Compare against baseline before the split</span></pre>
+  </div>
+</div>
+
+<!-- Phase E -->
+<div class="phase">Phase E &mdash; Rollback &amp; Document</div>
+
+<div class="step">
+  <div class="step-num">13</div>
+  <div class="step-title"><span class="badge badge-dev">DEVELOPER</span> Rollback QADB to pre-test state</div>
+  <div class="step-body">
+<pre><span class="comment">-- 1. Move locations back to SOUTH ATLANTIC</span>
+<span class="keyword">UPDATE</span> Customer.Locations <span class="keyword">SET</span> RegionID = 62
+<span class="keyword">WHERE</span> RegionID <span class="keyword">IN</span> (<span class="string">&lt;SA_CLT_ID&gt;</span>, <span class="string">&lt;SA_WEST_ID&gt;</span>, <span class="string">&lt;SA_EAST_ID&gt;</span>, <span class="string">&lt;SA_NONCORE_ID&gt;</span>);
+
+<span class="comment">-- 2. Delete the test sub-regions</span>
+<span class="keyword">DELETE FROM</span> Customer.Regions
+<span class="keyword">WHERE</span> Region <span class="keyword">IN</span> (<span class="string">'SA CLT'</span>, <span class="string">'SA WEST'</span>, <span class="string">'SA EAST'</span>, <span class="string">'SA NONCORE'</span>);
+
+<span class="comment">-- 3. Regenerate forecast 203 to restore original RegionForecasts</span>
+<span class="keyword">EXEC</span> [Plan].GenerateForecastRegions @ForecastID = 203;
+
+<span class="comment">-- 4. Re-run weekly distribution to restore WeeklyDistribution rows</span>
+<span class="comment">-- (requires RLS context)</span>
+<span class="keyword">INSERT INTO</span> dbo.ForecastCurrent (SystemUser, HostName, ForecastID, CreatedAt, [Override])
+<span class="keyword">VALUES</span> (SUSER_NAME(), HOST_NAME(), 203, GETDATE(), 1);
+
+<span class="keyword">EXEC</span> [Plan].ForecastWeeklyDistribution @ForecastID = 203;
+
+<span class="keyword">DELETE FROM</span> dbo.ForecastCurrent
+<span class="keyword">WHERE</span> SystemUser = SUSER_NAME() <span class="keyword">AND</span> HostName = HOST_NAME();</pre>
+    <div class="callout callout-yellow">
+      <strong>Note</strong>
+      Rollback of RegionForecasts is lossy &mdash; GenerateForecastRegions creates rows with empty values. If you need to preserve the original forecast values, back them up before step 10.
+    </div>
+<pre><span class="comment">-- BACKUP before testing (run before step 10)</span>
+<span class="keyword">SELECT</span> * <span class="keyword">INTO</span> #RF_Backup
+<span class="keyword">FROM</span> [Plan].RegionForecasts
+<span class="keyword">WHERE</span> ForecastID = 203 <span class="keyword">AND</span> RegionID = 62;
+
+<span class="comment">-- RESTORE after rollback (run after step 13)</span>
+<span class="keyword">DELETE FROM</span> [Plan].RegionForecasts
+<span class="keyword">WHERE</span> ForecastID = 203 <span class="keyword">AND</span> RegionID = 62;
+
+<span class="keyword">INSERT INTO</span> [Plan].RegionForecasts
+<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> #RF_Backup;</pre>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">14</div>
+  <div class="step-title"><span class="badge badge-claude">CLAUDE</span> Verify rollback &mdash; all baselines match Step 1</div>
+  <div class="step-body">
+    <p>Re-run all baseline queries from Step 1 and confirm counts match.</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TAB 2: MIGRATION STRATEGY                   -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-migration" class="tab-content">
+
+<h2>The Core Problem</h2>
+
+<div class="callout callout-red">
+  <strong>Silent Data Loss</strong>
+  After the region split, existing forecasts lose all South Atlantic export data. <code>Plan.WeeklyDistribution</code> stores <code>RegionID = 62</code> on every row. After the split, 0 locations have <code>RegionID = 62</code>. The INNER JOIN in the export view returns <strong>0 rows</strong>. No error. No warning. Data just disappears from exports.
+</div>
+
+<div class="diagram"><span class="dim">THE PROBLEM IN ONE PICTURE:</span>
+
+<span class="blue">Plan.WeeklyDistribution</span>          <span class="blue">Customer.Locations</span>
+┌──────────────────────┐          ┌──────────────────────┐
+│ ForecastID: 203      │          │ ID: 5001             │
+│ RegionID:  <span class="red">62</span>        │          │ RegionID: <span class="green">65</span> (SA CLT) │
+│ ItemID: 100          │  <span class="red">INNER</span>   │ Location: Raleigh NC │
+│ WeeklyQty: 500       │──<span class="red">JOIN</span>──&gt; │                      │
+│                      │  <span class="red">FAILS</span>  │ <span class="red">62 ≠ 65 → no match</span>   │
+└──────────────────────┘          └──────────────────────┘
+
+<span class="yellow">Result: 0 rows in export. 500 units vanish from the production plan.</span></div>
+
+<h2>What Breaks vs. What's Safe</h2>
+
+<table>
+  <tr><th>Table</th><th>Status</th><th>Rows Affected</th><th>What Happens</th></tr>
+  <tr>
+    <td><code>Plan.WeeklyDistribution</code></td>
+    <td><span class="badge badge-breaks">BREAKS</span></td>
+    <td>14,736 (QADB)</td>
+    <td>INNER JOIN to locations fails &rarr; export returns 0 rows for SA stores</td>
+  </tr>
+  <tr>
+    <td><code>Plan.RegionForecasts</code></td>
+    <td><span class="badge badge-breaks">BREAKS</span></td>
+    <td>283 (QADB)</td>
+    <td>Rows point to dead region. If regenerated, old forecast values are permanently lost</td>
+  </tr>
+  <tr>
+    <td><code>Data.WeeklyRetailHistory</code></td>
+    <td><span class="badge badge-breaks">BREAKS</span></td>
+    <td>3,555</td>
+    <td>New sub-regions have 0 history &rarr; weekly distribution algorithm has no pattern data</td>
+  </tr>
+  <tr>
+    <td><code>Product.ProductionItemRegions</code></td>
+    <td><span class="badge badge-breaks">BREAKS</span></td>
+    <td>8 (production)</td>
+    <td>Bellina Planter &amp; Select Planter lose SA region link &rarr; wrong production mix applied</td>
+  </tr>
+  <tr>
+    <td><code>Data.WeeklyRetailHistoryByItem</code></td>
+    <td><span class="badge badge-breaks">BREAKS</span></td>
+    <td>Unknown (RLS)</td>
+    <td>Same issue as WeeklyRetailHistory</td>
+  </tr>
+  <tr>
+    <td><code>Customer.SiteMaps</code></td>
+    <td><span class="badge badge-safe">SAFE</span></td>
+    <td>&mdash;</td>
+    <td>Joins on LocationID, not RegionID</td>
+  </tr>
+  <tr>
+    <td><code>Customer.Locations</code></td>
+    <td><span class="badge badge-safe">SAFE</span></td>
+    <td>&mdash;</td>
+    <td>Locations themselves are fine &mdash; just get new RegionIDs</td>
+  </tr>
+  <tr>
+    <td><code>Customer.Regions</code></td>
+    <td><span class="badge badge-safe">SAFE</span></td>
+    <td>&mdash;</td>
+    <td>Old "SOUTH ATLANTIC" row persists (INSERT-only behavior)</td>
+  </tr>
+</table>
+
+<h2>Can Old Forecasts Be Left Unchanged?</h2>
+
+<div class="callout callout-red">
+  <strong>No.</strong> Not if they need to export correctly.
+</div>
+
+<ul>
+  <li><strong>If we do nothing:</strong> Old forecasts silently lose SA data from exports. The numbers are still in the database, but the export pipeline can't find them.</li>
+  <li><strong>If we only fix new forecasts:</strong> All active Cal_2026 forecasts still can't export SA data. You'd have to tell users "don't export any forecast created before the split" &mdash; that's not viable.</li>
+  <li><strong>Exception:</strong> Truly archived forecasts that will <em>never be exported again</em> can be left as-is. The data persists; it just can't flow through the export pipeline.</li>
+</ul>
+
+<hr>
+
+<h2>Migration: Table-by-Table</h2>
+
+<!-- Table 1: WeeklyDistribution -->
+<h3>1. Plan.WeeklyDistribution</h3>
+<p><strong>The problem:</strong> 14,736 rows (QADB) have <code>RegionID = 62</code>. After split, this ID has 0 locations. Export returns nothing.</p>
+
+<p><strong>The challenge:</strong> WeeklyDistribution is at the <em>region</em> level, not the <em>location</em> level. One row says "RegionID=62, ItemID=X, WeeklyQty=500." How do you split 500 across 4 sub-regions?</p>
+
+<h4>Option A: Proportional Split by Location Count</h4>
+<p>Divide existing quantities proportionally based on how many stores are in each sub-region.</p>
+
+<table>
+  <tr><th>Sub-Region</th><th>Locations</th><th>% of 133</th><th>Example: 500 units</th></tr>
+  <tr><td>SA CLT (NC)</td><td>40</td><td>30.1%</td><td>150</td></tr>
+  <tr><td>SA WEST (TN+KY+IN)</td><td>38</td><td>28.6%</td><td>143</td></tr>
+  <tr><td>SA EAST (SC+GA)</td><td>23</td><td>17.3%</td><td>86</td></tr>
+  <tr><td>SA NONCORE (VA+WV)</td><td>32</td><td>24.1%</td><td>121</td></tr>
+</table>
+
+<pre><span class="comment">-- Migration script: Split WeeklyDistribution rows proportionally</span>
+<span class="comment">-- Run AFTER new regions exist and locations are reassigned</span>
+
+<span class="comment">-- Calculate location-based proportions</span>
+<span class="keyword">WITH</span> SubRegionCounts <span class="keyword">AS</span> (
+    <span class="keyword">SELECT</span>
+        l.RegionID <span class="keyword">AS</span> NewRegionID,
+        <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> LocCount,
+        <span class="keyword">CAST</span>(<span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">DECIMAL</span>(10,6)) /
+            <span class="keyword">SUM</span>(<span class="keyword">COUNT</span>(*)) <span class="keyword">OVER</span>() <span class="keyword">AS</span> Proportion
+    <span class="keyword">FROM</span> Customer.Locations l
+    <span class="keyword">WHERE</span> l.RegionID <span class="keyword">IN</span> (<span class="string">&lt;SA_CLT_ID&gt;</span>, <span class="string">&lt;SA_WEST_ID&gt;</span>, <span class="string">&lt;SA_EAST_ID&gt;</span>, <span class="string">&lt;SA_NONCORE_ID&gt;</span>)
+    <span class="keyword">GROUP BY</span> l.RegionID
+)
+<span class="comment">-- Insert new split rows</span>
+<span class="keyword">INSERT INTO</span> [Plan].WeeklyDistribution
+    (ForecastID, RegionID, ItemID, WeekID, WeeklyQty, <span class="comment">/* other columns */</span>)
+<span class="keyword">SELECT</span>
+    wd.ForecastID,
+    src.NewRegionID,
+    wd.ItemID,
+    wd.WeekID,
+    <span class="keyword">ROUND</span>(wd.WeeklyQty * src.Proportion, 2) <span class="keyword">AS</span> WeeklyQty
+    <span class="comment">/* other columns */</span>
+<span class="keyword">FROM</span> [Plan].WeeklyDistribution wd
+<span class="keyword">CROSS JOIN</span> SubRegionCounts src
+<span class="keyword">WHERE</span> wd.RegionID = 62;
+
+<span class="comment">-- Then delete the old RegionID=62 rows</span>
+<span class="keyword">DELETE FROM</span> [Plan].WeeklyDistribution <span class="keyword">WHERE</span> RegionID = 62;</pre>
+
+<div class="callout callout-yellow">
+  <strong>Trade-off</strong>
+  Proportional split is an approximation. Different sub-regions may have different demand patterns (that's the whole reason for splitting). But it preserves existing forecast work and gives users a starting point to adjust.
+</div>
+
+<h4>Option B: Regenerate From Scratch</h4>
+<p>Users re-enter forecast numbers for all 4 sub-regions. Clean but loses all entered data for SA.</p>
+
+<h4>Option C: Hybrid (Recommended)</h4>
+<p>Split proportionally as a starting point, flag the forecasts as "migrated &mdash; review needed," and let users adjust the pre-populated numbers.</p>
+
+<hr>
+
+<!-- Table 2: RegionForecasts -->
+<h3>2. Plan.RegionForecasts</h3>
+<p><strong>The problem:</strong> 283 rows reference <code>RegionID = 62</code>. If <code>GenerateForecastRegions</code> runs, it DELETEs these and creates empty rows for sub-regions. All user-entered forecast values are lost.</p>
+
+<p><strong>Schema reminder:</strong> RegionForecasts has 29 columns including Override, ForecastQty, and many week-level fields. These contain the actual numbers users have entered.</p>
+
+<pre><span class="comment">-- Migration: Capture SA values, then distribute to sub-regions</span>
+
+<span class="comment">-- Step 1: Backup existing SA forecast values</span>
+<span class="keyword">SELECT</span> * <span class="keyword">INTO</span> #RF_SA_Backup
+<span class="keyword">FROM</span> [Plan].RegionForecasts
+<span class="keyword">WHERE</span> RegionID = 62;
+
+<span class="comment">-- Step 2: Run GenerateForecastRegions (creates empty sub-region rows)</span>
+<span class="comment">-- Do this for EACH affected forecast</span>
+<span class="keyword">EXEC</span> [Plan].GenerateForecastRegions @ForecastID = <span class="string">&lt;ForecastID&gt;</span>;
+
+<span class="comment">-- Step 3: Proportionally fill the new sub-region rows from backup</span>
+<span class="comment">-- (Same proportion logic as WeeklyDistribution)</span>
+<span class="keyword">UPDATE</span> rf
+<span class="keyword">SET</span>
+    rf.Override = <span class="keyword">ROUND</span>(bk.Override * prop.Proportion, 2),
+    rf.ForecastQty = <span class="keyword">ROUND</span>(bk.ForecastQty * prop.Proportion, 2)
+    <span class="comment">/* ... repeat for each quantity column */</span>
+<span class="keyword">FROM</span> [Plan].RegionForecasts rf
+<span class="keyword">JOIN</span> #RF_SA_Backup bk
+    <span class="keyword">ON</span> bk.ForecastID = rf.ForecastID <span class="keyword">AND</span> bk.ItemID = rf.ItemID
+<span class="keyword">JOIN</span> SubRegionProportions prop
+    <span class="keyword">ON</span> prop.NewRegionID = rf.RegionID
+<span class="keyword">WHERE</span> rf.RegionID <span class="keyword">IN</span> (<span class="string">&lt;new sub-region IDs&gt;</span>);</pre>
+
+<hr>
+
+<!-- Table 3: WeeklyRetailHistory -->
+<h3>3. Data.WeeklyRetailHistory</h3>
+<p><strong>The problem:</strong> 3,555 rows of historical retail data (2019&ndash;2023) are tagged to <code>RegionID = 62</code>. New sub-regions have <strong>zero history</strong>. The <code>ForecastWeeklyDistribution</code> proc uses this history to calculate weekly patterns.</p>
+
+<h4>Option A: Copy SA History to All Sub-Regions (Recommended for now)</h4>
+<p>Each sub-region gets the same weekly pattern as the old SA aggregate. Inaccurate (the whole point of splitting is they're different), but functional.</p>
+
+<pre><span class="comment">-- Copy SA retail history to each new sub-region</span>
+<span class="keyword">INSERT INTO</span> Data.WeeklyRetailHistory
+    (YearID, WeekID, RegionID, ProductGroupID, WeeklyRetail, WeeklyRetailShipped)
+<span class="keyword">SELECT</span>
+    wrh.YearID,
+    wrh.WeekID,
+    new_r.ID <span class="keyword">AS</span> RegionID,
+    wrh.ProductGroupID,
+    <span class="keyword">ROUND</span>(wrh.WeeklyRetail * prop.Proportion, 2),
+    <span class="keyword">ROUND</span>(wrh.WeeklyRetailShipped * prop.Proportion, 2)
+<span class="keyword">FROM</span> Data.WeeklyRetailHistory wrh
+<span class="keyword">CROSS JOIN</span> (
+    <span class="keyword">SELECT</span> l.RegionID,
+           <span class="keyword">CAST</span>(<span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">DECIMAL</span>(10,6)) /
+           <span class="keyword">SUM</span>(<span class="keyword">COUNT</span>(*)) <span class="keyword">OVER</span>() <span class="keyword">AS</span> Proportion
+    <span class="keyword">FROM</span> Customer.Locations l
+    <span class="keyword">WHERE</span> l.RegionID <span class="keyword">IN</span> (<span class="string">&lt;new sub-region IDs&gt;</span>)
+    <span class="keyword">GROUP BY</span> l.RegionID
+) prop
+<span class="keyword">JOIN</span> Customer.Regions new_r <span class="keyword">ON</span> new_r.ID = prop.RegionID
+<span class="keyword">WHERE</span> wrh.RegionID = 62;</pre>
+
+<div class="callout callout-blue">
+  <strong>Long-term</strong>
+  Once the sub-regions are live, real retail data will accumulate for each one. After a full year, the copied approximations can be replaced with actual data. Consider flagging these rows as "estimated" if the schema allows it.
+</div>
+
+<h4>Option B: Proportional Split by Location Count</h4>
+<p>Same as above but scales the retail values by sub-region store count proportions.</p>
+
+<h4>Option C: Reaggregate from Store-Level POS Data</h4>
+<p>If store-level retail data exists upstream, reaggregate by new sub-regions. Most accurate but requires access to source data we may not have.</p>
+
+<hr>
+
+<!-- Table 4: ProductionItemRegions -->
+<h3>4. Product.ProductionItemRegions (Production Only)</h3>
+<p><strong>The problem:</strong> 8 production items reference SA (RegionID=62) in BLN_FORECAST production. These control region-specific production mixes for the Bellina Planter and Select Square Planter.</p>
+
+<table>
+  <tr><th>ProductionItem</th><th>Genus</th><th>Item</th><th>Mix%</th><th>Weeks</th></tr>
+  <tr><td>4011685</td><td>PRIMULA</td><td>BELLINA PLANTER #8</td><td>40%</td><td>Wk 1&ndash;12</td></tr>
+  <tr><td>4011594</td><td>RANUNCULUS</td><td>BELLINA PLANTER #8</td><td>40%</td><td>Wk 1&ndash;12</td></tr>
+  <tr><td>4012867</td><td>STOCK</td><td>BELLINA PLANTER #8</td><td>20%</td><td>Wk 1&ndash;12</td></tr>
+  <tr><td>4000205</td><td>LANTANA</td><td>SELECT SQ PLTR #10</td><td>33%</td><td>Wk 27&ndash;30</td></tr>
+  <tr><td>4011708</td><td>RUDBECKIA</td><td>SELECT SQ PLTR #10</td><td>33%</td><td>Wk 27&ndash;30</td></tr>
+  <tr><td>4000207</td><td>ZINNIA</td><td>SELECT SQ PLTR #10</td><td>34%</td><td>Wk 27&ndash;30</td></tr>
+  <tr><td>4001029</td><td>PANSY</td><td>PANSY MIX FALL #6</td><td>50%</td><td>All year</td></tr>
+  <tr><td>4001032</td><td>PANSY</td><td>PANSY YELLOW FALL #6</td><td>67%</td><td>All year</td></tr>
+</table>
+
+<p><strong>Migration:</strong> Duplicate all 8 entries for each new sub-region. All sub-regions get the same production mix that SA had.</p>
+
+<pre><span class="comment">-- Duplicate ProductionItemRegions for new sub-regions</span>
+<span class="keyword">INSERT INTO</span> Product.ProductionItemRegions (ProductionItemID, RegionID)
+<span class="keyword">SELECT</span> pir.ProductionItemID, new_r.ID
+<span class="keyword">FROM</span> Product.ProductionItemRegions pir
+<span class="keyword">CROSS JOIN</span> Customer.Regions new_r
+<span class="keyword">WHERE</span> pir.RegionID = 62
+  <span class="keyword">AND</span> new_r.Region <span class="keyword">IN</span> (<span class="string">'SA CLT'</span>, <span class="string">'SA WEST'</span>, <span class="string">'SA EAST'</span>, <span class="string">'SA NONCORE'</span>);
+
+<span class="comment">-- Optionally: keep the old RegionID=62 entries or remove them</span>
+<span class="comment">-- Keeping them is harmless (the region has 0 locations)</span></pre>
+
+<div class="callout callout-green">
+  <strong>This one is straightforward.</strong> Unlike the other tables, ProductionItemRegions is a simple bridge table. Duplicating entries is safe. QADB has 0 rows in this table, so this can only be tested in production or after seeding QADB.
+</div>
+
+<hr>
+
+<!-- Table 5: WeeklyRetailHistoryByItem -->
+<h3>5. Data.WeeklyRetailHistoryByItem</h3>
+<p><strong>The problem:</strong> Same as WeeklyRetailHistory but at the item level. Row count unknown (RLS-protected). Same migration approach needed.</p>
+<p><strong>Migration:</strong> Same pattern &mdash; copy/split SA rows to new sub-regions proportionally.</p>
+
+<hr>
+
+<h2>Full Migration Sequence</h2>
+
+<p>This is the order of operations for a production migration. Each step depends on the previous one.</p>
+
+<div class="diagram"><span class="yellow">BEFORE BELL MAKES THE CHANGE:</span>
+
+  1. <span class="blue">[DEVELOPER]</span> Build &amp; test migration script in QADB
+  2. <span class="blue">[DEVELOPER]</span> Backup production tables (WeeklyDistribution, RegionForecasts,
+                 WeeklyRetailHistory, ProductionItemRegions for RegionID=62)
+
+<span class="yellow">BELL MAKES THE CHANGE (new CUST_REGION values in customer_data.csv):</span>
+
+  3. <span class="green">[ETL AUTO]</span>  Daily ETL runs Import.usp_ImportForecastCustomers
+                 → 4 new regions created (INSERT-only)
+                 → 133 locations get new RegionIDs (MERGE UPDATE)
+                 → SOUTH ATLANTIC now has 0 locations
+
+  <span class="red">⚠ AT THIS POINT, ALL SA EXPORTS ARE BROKEN ⚠</span>
+
+<span class="yellow">IMMEDIATELY AFTER ETL:</span>
+
+  4. <span class="blue">[DEVELOPER]</span> Record new sub-region IDs
+  5. <span class="blue">[DEVELOPER]</span> Run WeeklyRetailHistory migration (copy/split to new sub-regions)
+  6. <span class="blue">[DEVELOPER]</span> Run ProductionItemRegions migration (duplicate 8 entries)
+  7. <span class="blue">[DEVELOPER]</span> For EACH active forecast:
+                 a. Backup RegionForecasts for RegionID=62
+                 b. Split WeeklyDistribution rows to new sub-regions
+                 c. Delete old RegionID=62 WeeklyDistribution rows
+                 d. Run GenerateForecastRegions (creates sub-region rows)
+                 e. Populate new RegionForecast rows from backup (proportional)
+                 f. Re-run ForecastWeeklyDistribution
+  8. <span class="blue">[DEVELOPER]</span> Validate exports for each affected forecast
+
+<span class="yellow">USER ACTION:</span>
+
+  9. <span class="green">[USERS]</span>    Review &amp; adjust pre-populated sub-region forecast numbers
+
+<span class="yellow">ONGOING:</span>
+
+ 10. <span class="green">[AUTO]</span>     New sub-regions accumulate real retail history over next year
+ 11. <span class="blue">[DEVELOPER]</span> After 1 year: replace estimated history with actual data</div>
+
+<hr>
+
+<h2>Complexity Assessment</h2>
+
+<table>
+  <tr><th>Component</th><th>Complexity</th><th>Reason</th></tr>
+  <tr><td>Region creation</td><td style="color: var(--green-soft); font-weight:600;">Low</td><td>ETL handles this automatically</td></tr>
+  <tr><td>Location reassignment</td><td style="color: var(--green-soft); font-weight:600;">Low</td><td>ETL handles this automatically</td></tr>
+  <tr><td>WeeklyDistribution migration</td><td style="color: var(--red-soft); font-weight:600;">High</td><td>Proportional split logic for every affected forecast; need to get column list right</td></tr>
+  <tr><td>RegionForecasts migration</td><td style="color: var(--yellow-soft); font-weight:600;">Medium</td><td>29 columns to split; backup/restore dance with GenerateForecastRegions</td></tr>
+  <tr><td>WeeklyRetailHistory</td><td style="color: var(--yellow-soft); font-weight:600;">Medium-High</td><td>3,555 rows to split; decision on split strategy affects forecast accuracy going forward</td></tr>
+  <tr><td>ProductionItemRegions</td><td style="color: var(--green-soft); font-weight:600;">Low</td><td>Simple INSERT duplication of 8 rows</td></tr>
+  <tr><td>Export validation</td><td style="color: var(--yellow-soft); font-weight:600;">Medium</td><td>End-to-end testing with RLS context for each forecast</td></tr>
+  <tr><td colspan="3" style="font-weight:600; background: var(--red-bg); color: var(--red-soft); text-align:center;">OVERALL: HIGH &mdash; Recommend meeting with Stephen before proceeding</td></tr>
+</table>
+
+<hr>
+
+<h2>Questions for Stephen</h2>
+
+<ol>
+  <li><strong>Do we migrate existing Cal_2026 forecasts, or do users re-enter?</strong><br>
+  Migration = complex script but preserves work. Re-enter = clean data but user burden.</li>
+
+  <li><strong>How should we split WeeklyRetailHistory?</strong><br>
+  Copy SA pattern to all 4? Proportional by location count? Wait for real data? Reaggregate from POS?</li>
+
+  <li><strong>When does Bell plan to make this change?</strong><br>
+  Determines urgency and whether we have time to build proper migration tooling vs. a one-time script.</li>
+
+  <li><strong>Should we build a reusable migration script or a one-off?</strong><br>
+  If more region splits are planned (Bell has mentioned others), a reusable tool saves time.</li>
+
+  <li><strong>Should we seed QADB's ProductionItemRegions before testing?</strong><br>
+  Currently empty in QADB &mdash; can't test that part of the pipeline without data.</li>
+
+  <li><strong>Should we add a safety check to export procs?</strong><br>
+  E.g., log a warning if a RegionID in WeeklyDistribution has 0 matching locations. Would catch this class of silent failure in the future.</li>
+
+  <li><strong>What about WeeklyRetailHistoryByItem?</strong><br>
+  RLS-protected; we couldn't see row counts. Needs same treatment as WeeklyRetailHistory.</li>
+</ol>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
