@@ -324,12 +324,13 @@ hr {
 <div class="header">
   <h1>South Atlantic Region Split</h1>
   <div class="subtitle">BLN Forecast — Testing Plan &amp; Migration Strategy</div>
-  <div class="meta">Internal &bull; March 2, 2026 &bull; QADB_FORECAST (testing) / BLN_FORECAST (production)</div>
+  <div class="meta">Internal &bull; Updated March 6, 2026 &bull; QADB_FORECAST (testing) / BLN_FORECAST (production)</div>
 </div>
 
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('testing')">Testing Plan</button>
   <button class="tab-btn" onclick="switchTab('migration')">Migration Strategy</button>
+  <button class="tab-btn" onclick="switchTab('meeting')">Meeting Notes</button>
 </div>
 
 <!-- ═══════════════════════════════════════════ -->
@@ -338,7 +339,7 @@ hr {
 <div id="tab-testing" class="tab-content active">
 
 <h2>Context</h2>
-<p>Bell Nursery plans to split the <strong>SOUTH ATLANTIC</strong> region into 4 sub-regions: <strong>SA CLT</strong>, <strong>SA WEST</strong>, <strong>SA EAST</strong>, and <strong>SA NONCORE</strong>. The change originates from the <code>CUST_REGION</code> field in Bell's <code>customer_data.csv</code>, which feeds our daily ETL via <code>Import.usp_ImportForecastCustomers</code>.</p>
+<p>Bell Nursery plans to split the <strong>SOUTH ATLANTIC</strong> region into 4 sub-regions: <strong>South Atlantic Charlotte</strong>, <strong>South Atlantic West</strong>, <strong>South Atlantic E</strong>, and <strong>S McNunn</strong>. The change originates from the <code>CUST_REGION</code> field in Bell's <code>customer_data.csv</code>, which feeds our daily ETL via <code>Import.usp_ImportForecastCustomers</code>.</p>
 
 <p>This document provides a step-by-step plan to test the split in <strong>QADB_FORECAST</strong> before it goes live in production.</p>
 
@@ -781,7 +782,112 @@ WeeklyDistribution (RegionID=62) ──INNER JOIN──&gt; Locations (RegionID=
 
 <hr>
 
-<h2>Migration: Table-by-Table</h2>
+<h2>Approaches Discussed (March 4 Sync w/ Eric Whitlow)</h2>
+
+<p>Four high-level approaches were discussed in the March 4 sync. These are the strategic options &mdash; the table-by-table migration details below apply to whichever in-place approach is chosen.</p>
+
+<h3>Approach 1: Separate Database <span class="badge badge-safe">ERIC'S PICK</span></h3>
+<div class="callout callout-green">
+  <strong>"Probably the cleanest" &mdash; Eric Whitlow</strong>
+  Copy everything to a new database. Delete old forecasts in the new DB. Set up new regions/locations as desired. Users pick which database to open &mdash; old DB for historical reference, new DB for going forward.
+</div>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Old forecasts remain completely untouched in original DB</li>
+        <li>No migration script needed &mdash; new DB starts clean</li>
+        <li>No risk of corrupting existing data</li>
+        <li>Clean break: new regions, new forecasts, no legacy baggage</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Two databases to maintain going forward</li>
+        <li>Users need to know which DB to open</li>
+        <li>New DB has no retail history for new sub-regions (same cold-start problem)</li>
+        <li>Any active Cal_2026 forecast work is stranded in old DB unless re-entered</li>
+        <li>Infrastructure cost of a second database</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h3>Approach 2: Rename + Create</h3>
+<p>Rename the existing "SOUTH ATLANTIC" region to one of the 4 sub-regions (e.g., "SA CLT"), then create the other 3 as new. Old forecast data partially works under the renamed region but only covers that sub-region's stores.</p>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Partial continuity &mdash; one sub-region inherits all old data</li>
+        <li>Simpler than full proportional split</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Only one sub-region gets the old data; other 3 start empty</li>
+        <li>The "lucky" sub-region gets inflated numbers (it inherited the full SA totals but only has ~30% of the stores)</li>
+        <li>Confusing for users &mdash; why does SA CLT have huge numbers and SA WEST has zero?</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h3>Approach 3: In-Place Migration (Proportional Split)</h3>
+<p>Keep the same database. Split existing SA forecast data proportionally across the 4 new sub-regions. See the table-by-table details below for how this works.</p>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Preserves existing forecast work as a starting point</li>
+        <li>Single database &mdash; no user confusion</li>
+        <li>Users can review and adjust pre-populated numbers</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Complex migration script (5 tables, proportional logic)</li>
+        <li>Proportional split is an approximation</li>
+        <li>Risk of bugs in migration corrupting data</li>
+        <li>Still has the retail history cold-start problem</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h3>Approach 4: New Attribute / Column</h3>
+<p>Add a sub-region dimension to the forecast data without changing the existing region structure. Deemed the trickiest and least clear on implementation.</p>
+<table>
+  <tr><th>Pros</th><th>Cons</th></tr>
+  <tr>
+    <td>
+      <ul>
+        <li>Old data remains valid as-is</li>
+        <li>Backward compatible</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Unclear how it would work end-to-end</li>
+        <li>Requires changes to views, procs, and possibly the UI</li>
+        <li>Most development effort</li>
+        <li>Eric flagged this as the trickiest</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<div class="callout callout-blue">
+  <strong>Next Step</strong>
+  Isaac to discuss with Stephen, then circle back with Bill to decide on an approach. Brad can restore the database to QA for testing whichever option is chosen.
+</div>
+
+<hr>
+
+<h2>Migration: Table-by-Table (if doing in-place migration)</h2>
 
 <!-- Table 1: WeeklyDistribution -->
 <h3>1. Plan.WeeklyDistribution</h3>
@@ -1044,6 +1150,76 @@ WeeklyDistribution (RegionID=62) ──INNER JOIN──&gt; Locations (RegionID=
 
   <li><strong>What about WeeklyRetailHistoryByItem?</strong><br>
   RLS-protected; we couldn't see row counts. Needs same treatment as WeeklyRetailHistory.</li>
+</ol>
+
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TAB 3: MEETING NOTES                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-meeting" class="tab-content">
+
+<h2>Forecast Integration Testing Sync</h2>
+<p><strong>Date:</strong> March 4, 2026, 4:30 PM &bull; <strong>Duration:</strong> 18m 43s</p>
+<p><strong>Attendees:</strong> Isaac Carpenter, Eric Whitlow</p>
+
+<hr>
+
+<h3>Context</h3>
+<p>Bill wants to split the South Atlantic region into 4 sub-regions for more granularity. The proposed sub-regions are:</p>
+<ul>
+  <li><strong>South Atlantic Charlotte</strong> (SA CLT)</li>
+  <li><strong>South Atlantic West</strong> (SA West)</li>
+  <li><strong>South Atlantic E</strong> (SA East)</li>
+  <li><strong>S McNunn</strong> (SA NonCore)</li>
+</ul>
+
+<h3>Problem Confirmed</h3>
+<p>Eric confirmed that the exports (Produce export, S&amp;P export, and potentially others) <strong>will break</strong> because they rely on a location-to-region lookup. Changing which locations belong to which regions behind the scenes will cause those exports to either return no data or only a subset of data for old forecasts.</p>
+
+<h3>Approaches Discussed</h3>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-title">Separate Database <span class="badge badge-safe">ERIC'S PICK</span></div>
+  <div class="step-body">
+    <p>Copy everything to a new database. Delete old forecasts there. Redo regions/locations as desired. Users pick which database to open.</p>
+    <p>Eric called this <strong>"probably the cleanest."</strong></p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-title">Rename + Create</div>
+  <div class="step-body">
+    <p>Rename the existing SOUTH ATLANTIC region to one of the four new sub-regions and create 3 new ones. Old forecast data would still partially work under the renamed region but wouldn't cover all locations.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-title">Manual Split of Old Data</div>
+  <div class="step-body">
+    <p>Go through old forecasts and divide values by 4 across the new sub-regions. Not ideal since allocation may not be even.</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-title">New Attribute / Column</div>
+  <div class="step-body">
+    <p>Add a sub-region dimension. Mentioned but deemed the trickiest and unclear how it would work.</p>
+  </div>
+</div>
+
+<h3>Testing Path</h3>
+<p>Brad can restore the database to QA, then update the region table and customer locations table to assign stores to the new sub-regions and test the impact.</p>
+
+<h3>Next Steps</h3>
+<ol>
+  <li>Isaac to talk to Stephen about the approaches</li>
+  <li>Circle back with Bill to decide on an approach</li>
+  <li>Brad to set up QA environment for testing</li>
 </ol>
 
 </div>
